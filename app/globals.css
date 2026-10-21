@@ -231,7 +231,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 .hero__hello { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
 .troll-mouth {
   flex: 0 0 auto;
-  width: min(156px, 36vw);
+  width: min(200px, 44vw);
   position: relative;
   transform-origin: 50% 65%;
 }
@@ -248,6 +248,8 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   height: auto;
   pointer-events: none;
   filter: none;
+  transform: none;
+  image-rendering: auto;
 }
 .bubble {
   display: inline-block;

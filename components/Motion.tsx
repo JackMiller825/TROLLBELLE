@@ -65,10 +65,10 @@ export default function Motion() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="loader__mouth-img"
-                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/trollbelle-mouth.png`}
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/trollbelle-mouth.png?v=3`}
                 alt=""
-                width={640}
-                height={360}
+                width={1774}
+                height={887}
                 decoding="async"
               />
             </div>
@@ -206,7 +206,8 @@ function mountMotion(
       barFill.style.strokeDashoffset = '1';
     }
     gsap.set('.loader__word span', { opacity: 0, y: 36, rotate: -8 });
-    gsap.set('.loader__mouth-img', { scale: 0.55, opacity: 0, transformOrigin: '50% 55%' });
+    gsap.set('.loader__mouth-pivot', { scale: 0.55, opacity: 0, transformOrigin: '50% 55%' });
+    gsap.set('.loader__mouth-img', { scale: 1, rotation: 0 });
 
     const loader = $('#loader');
     const pctEl = $('#loader-pct');
@@ -232,7 +233,7 @@ function mountMotion(
 
     const intro = gsap.timeline();
     intro
-      .to('.loader__mouth-img', { scale: 1, opacity: 1, duration: 0.62, ease: 'back.out(2.6)' })
+      .to('.loader__mouth-pivot', { scale: 1, opacity: 1, duration: 0.62, ease: 'back.out(2.6)' })
       .to('.loader__word span', { opacity: 1, y: 0, rotate: 0, duration: 0.55, ease: 'back.out(2.4)', stagger: 0.032 }, 0.12);
 
     const pulseMouthLaugh = (target: string) => {
@@ -336,7 +337,7 @@ function mountMotion(
     }
 
     function heroIdle() {
-      const beatHeroLaugh = () => { pulseMouthLaugh('.troll-mouth__img'); };
+      const beatHeroLaugh = () => { pulseMouthLaugh('.troll-mouth__pivot'); };
       beatHeroLaugh();
       const heroLaughTimer = window.setInterval(beatHeroLaugh, 1000);
       cleanups.push(() => window.clearInterval(heroLaughTimer));

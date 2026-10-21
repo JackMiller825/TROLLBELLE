@@ -1,4 +1,8 @@
-"""Knock out the large black oval behind trollbelle-mouth.png (keeps ink lines)."""
+"""Build trollbelle-mouth.png from new-assets/mouth.png.
+
+Only the largest connected black region (the oval fill) is made transparent.
+Every other pixel stays identical to the source asset (white teeth, black ink).
+"""
 from __future__ import annotations
 
 import collections

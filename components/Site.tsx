@@ -9,6 +9,7 @@ import { showToast } from '@/lib/toast';
 import Motion from '@/components/Motion';
 
 const P = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/`;
+const MOUTH_SRC = `${P}trollbelle-mouth.png?v=3`;
 const CA_PLACEHOLDER = 'Coming Soon..';
 
 const story = [
@@ -149,13 +150,15 @@ function HeroLaughMouth() {
   return (
     <div className="troll-mouth" id="troll-mouth" aria-hidden="true">
       <div className="troll-mouth__pivot">
-        <Image
-          unoptimized
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           className="troll-mouth__img"
-          src={`${P}trollbelle-mouth.png`}
+          src={MOUTH_SRC}
           alt=""
           width={1774}
           height={887}
+          decoding="async"
+          draggable={false}
         />
       </div>
     </div>
