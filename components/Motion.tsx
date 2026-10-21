@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
 import { onToast } from '@/lib/toast';
 
 const WORDS = ['troll!', 'problem?', 'grin!', 'boop', '♪', 'chaos!', 'hey!'];
@@ -15,7 +18,6 @@ function rand(a: number, b: number) {
 export default function Motion() {
   useEffect(() => {
     let destroy = () => {};
-    let cancelled = false;
     const params = new URLSearchParams(window.location.search);
     const compare = params.get('compare') === '1';
     const reduce = params.get('reduce') === '1' || compare
@@ -30,18 +32,16 @@ export default function Motion() {
       return () => off();
     }
 
-    (async () => {
-      const [{ default: gsap }, { ScrollTrigger }, { default: Lenis }] = await Promise.all([
-        import('gsap'),
-        import('gsap/ScrollTrigger'),
-        import('lenis'),
-      ]);
-      if (cancelled) return;
-      destroy = mountMotion(gsap, ScrollTrigger, Lenis);
-    })();
+    const skipIntro = sessionStorage.getItem('tb_ready') === '1';
+    if (skipIntro) {
+      document.body.classList.remove('is-loading');
+      const loader = document.getElementById('loader');
+      if (loader) loader.style.display = 'none';
+    }
+
+    destroy = mountMotion(gsap, ScrollTrigger, Lenis, skipIntro);
 
     return () => {
-      cancelled = true;
       destroy();
     };
   }, []);
@@ -106,8 +106,9 @@ function flashToast(message: string) {
 
 function mountMotion(
   gsap: typeof import('gsap').default,
-  ScrollTrigger: typeof import('gsap/ScrollTrigger').default,
+  ScrollTrigger: typeof import('gsap/ScrollTrigger').ScrollTrigger,
   Lenis: typeof import('lenis').default,
+  skipIntro = false,
 ) {
   gsap.registerPlugin(ScrollTrigger);
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -223,8 +224,8 @@ function mountMotion(
     if (!mouthSrc && !heroSrc) bump();
     if (document.readyState === 'complete') bump();
     else window.addEventListener('load', bump, { once: true });
-    const dwell = window.setTimeout(bump, 450);
-    const safety = window.setTimeout(() => { progress.target = 1; }, 4500);
+    const dwell = window.setTimeout(bump, 180);
+    const safety = window.setTimeout(() => { progress.target = 1; }, 2800);
     cleanups.push(() => { window.clearTimeout(dwell); window.clearTimeout(safety); });
 
     let loaderFinished = false;
@@ -254,10 +255,11 @@ function mountMotion(
       const hide = () => {
         if (loader) loader.style.display = 'none';
         document.body.classList.remove('is-loading');
+        try { sessionStorage.setItem('tb_ready', '1'); } catch { /* private mode */ }
         try { lenis?.start(); } catch { /* already started */ }
         window.requestAnimationFrame(() => ScrollTrigger.refresh());
       };
-      const hideTimer = window.setTimeout(hide, 900);
+      const hideTimer = window.setTimeout(hide, 480);
       cleanups.push(() => window.clearTimeout(hideTimer));
       try {
         if (!location.hash) {
@@ -289,7 +291,7 @@ function mountMotion(
 
     const started = performance.now();
     const tick = () => {
-      const timed = Math.min(1, (performance.now() - started) / 950);
+      const timed = Math.min(1, (performance.now() - started) / 480);
       progress.target = Math.max(progress.target, timed);
       const catchUp = progress.target >= 1 ? 0.42 : 0.2;
       progress.shown += (Math.min(1, progress.target) - progress.shown) * catchUp;
@@ -301,8 +303,10 @@ function mountMotion(
         finishLoader();
       }
     };
-    gsap.ticker.add(tick);
-    cleanups.push(() => gsap.ticker.remove(tick));
+    if (!skipIntro) {
+      gsap.ticker.add(tick);
+      cleanups.push(() => gsap.ticker.remove(tick));
+    }
 
     const heroLetters = '.hero-title-letter';
     gsap.set(heroLetters, { y: 50, scale: 0.86, opacity: 0, transformOrigin: '50% 100%' });
@@ -370,6 +374,25 @@ function mountMotion(
         }, 2800);
         cleanups.push(() => window.clearInterval(cycle));
       }
+    }
+
+    if (skipIntro) {
+      window.clearInterval(loaderLaughTimer);
+      wordBounce.kill();
+      intro.kill();
+      loaderFinished = true;
+      try { lenis?.start(); } catch { /* already started */ }
+      gsap.set(heroLetters, { y: 0, scale: 1, opacity: 1 });
+      gsap.set('#mascot', { scale: 1, rotation: 0, opacity: 1 });
+      gsap.set('.troll-mouth', { scale: 1, opacity: 1 });
+      gsap.set('.hero-subtitle, .contract-box, .hero__cta, .bubble', { y: 0, opacity: 1 });
+      gsap.set('.left-doodle', { rotation: -12, scale: 1, opacity: 1 });
+      gsap.set('.right-doodle', { rotation: -11, scale: 1, opacity: 1 });
+      gsap.set('.scroll-hint', { y: 0, opacity: 1 });
+      window.requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+        heroIdle();
+      });
     }
 
     gsap.to('.exact-hero-title, .alternate-hero-title', {

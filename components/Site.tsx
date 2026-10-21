@@ -156,7 +156,6 @@ function HeroLaughMouth() {
           alt=""
           width={1774}
           height={887}
-          priority
         />
       </div>
     </div>

@@ -15,6 +15,11 @@ export default function RootLayout({children}:{children:React.ReactNode}) {
   return (
     <html lang="en">
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var k='tb_chunk_retry';function retry(){try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');location.reload()}catch(e){location.reload()}}window.addEventListener('error',function(e){var m=(e&&e.message)||'';if(/Loading chunk|ChunkLoadError|failed to fetch dynamically imported module/i.test(m))retry()});window.addEventListener('unhandledrejection',function(e){var r=e&&e.reason;var m=(r&&(r.message||r.name))||String(r||'');if(/Loading chunk|ChunkLoadError|failed to fetch dynamically imported module/i.test(m))retry()})})();`,
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
