@@ -30,24 +30,24 @@ const phases: Array<{ name: string; items: Array<{ text: string; done?: boolean 
     name: 'troll',
     items: [
       { text: 'draw the creature', done: true },
-      { text: 'website is up', done: true },
-      { text: 'memes start here' },
+      { text: 'this site goes live', done: true },
+      { text: '1,000 holders on the timeline' },
     ],
   },
   {
     name: 'belle',
     items: [
-      { text: 'community begins' },
-      { text: 'more memes' },
-      { text: 'community events' },
+      { text: 'fair launch on ethereum' },
+      { text: 'dexscreener paid, trending' },
+      { text: 'meme army in every comment' },
     ],
   },
   {
     name: 'la',
     items: [
-      { text: 'new stories' },
-      { text: 'collaborations' },
-      { text: 'fun experiments' },
+      { text: 'the lore keeps glitching out' },
+      { text: 'cex? maybe. memes first.' },
+      { text: 'punk princess forever' },
     ],
   },
 ];
@@ -491,15 +491,18 @@ function Tokenomics() {
 function Roadmap() {
   return (
     <section className="screen roadmap" id="roadmap" aria-labelledby="roadmap-heading">
-      <h2 className="section__title" id="roadmap-heading" aria-label="troll-map"><Chars text="troll-map" /></h2>
+      <div className="section__head">
+        <h2 className="section__title" id="roadmap-heading" aria-label="troll-map"><Chars text="troll-map" /></h2>
+      </div>
       <div className="phases">
         {phases.map((phase) => (
-          <article className="phase tilt" key={phase.name}>
-            <h3>phase <mark>{phase.name}</mark></h3>
+          <article className="phase card tilt" key={phase.name}>
+            <h3>
+              phase <em>{phase.name}</em>
+            </h3>
             <ul>
               {phase.items.map((item) => (
-                <li className={item.done ? 'is-done' : ''} key={item.text}>
-                  <span className="box" aria-hidden="true">{item.done ? '✓' : ''}</span>
+                <li className={item.done ? 'done' : undefined} key={item.text}>
                   {item.text}
                 </li>
               ))}
@@ -507,7 +510,6 @@ function Roadmap() {
           </article>
         ))}
       </div>
-      <p className="stat-note">a doodle map, not a promise. nothing here is marked done except the site that is already on screen.</p>
     </section>
   );
 }

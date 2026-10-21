@@ -518,30 +518,65 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 .facts li span { color: var(--mute); font-size: 20px; font-weight: 400; text-transform: lowercase; }
 .facts b { font-family: 'Permanent Marker', cursive; font-size: clamp(24px, 2.4vw, 34px); font-weight: 400; text-align: right; }
 
-.phases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 22px; }
-.phase {
-  border: 3px solid #000;
-  background: #fff;
-  border-radius: 18px 22px 16px 24px;
-  box-shadow: 5px 5px 0 #000;
-  padding: 16px 16px 18px;
-}
-.phase h3 { margin: 0 0 12px; font-family: 'Permanent Marker', cursive; font-size: clamp(26px, 2.4vw, 34px); font-weight: 400; }
-.phase mark { background: #000; color: #fff; padding: 0 6px 2px; }
-.phase ul { list-style: none; margin: 0; padding: 0; }
-.phase li { display: flex; align-items: flex-start; gap: 8px; margin: 8px 0; font-size: 16px; }
-.box {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #000;
+.section__head { width: 100%; }
+.phases {
   display: grid;
-  place-items: center;
-  flex: none;
-  font-size: 13px;
-  line-height: 1;
-  margin-top: 1px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(18px, 2.4vw, 30px);
+  margin-top: 18px;
 }
-.is-done .box { background: #000; color: #fff; }
+.phase.card {
+  padding: 26px 26px 28px;
+  will-change: transform;
+}
+.phase h3 {
+  margin: 0 0 14px;
+  font-family: 'Permanent Marker', cursive;
+  font-weight: 400;
+  font-size: clamp(32px, 3.6vw, 40px);
+  line-height: 1;
+  text-transform: lowercase;
+}
+.phase h3 em {
+  font-style: normal;
+  display: inline-block;
+  padding: 0 10px 4px;
+  background: #000;
+  color: #fff;
+  border-radius: var(--wob-3);
+  transform: rotate(-4deg);
+}
+.phase ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.phase li {
+  position: relative;
+  padding-left: 40px;
+  font-size: clamp(18px, 1.8vw, 21px);
+  line-height: 1.35;
+}
+.phase li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 24px;
+  height: 24px;
+  border: 3px solid #000;
+  border-radius: var(--wob-2);
+}
+.phase li.done {
+  text-decoration: line-through 2px;
+  color: var(--mute);
+}
+.phase li.done::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: -6px;
+  width: 30px;
+  height: 26px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 26'%3E%3Cpath d='M3 14l8 8L28 3' fill='none' stroke='%23000' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
 
 .outro {
   background: #000;
