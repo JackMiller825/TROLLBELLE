@@ -5,6 +5,8 @@
   --ink: #000;
   --paper: #fff;
   --frame: 1180px;
+  --max: 1180px;
+  --gutter: clamp(16px, 4vw, 48px);
   --mute: #5b5b5b;
   --wob-1: 255px 18px 225px 18px / 18px 225px 18px 255px;
   --wob-2: 18px 225px 18px 255px / 255px 18px 225px 18px;
@@ -68,23 +70,10 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   justify-self: start;
   display: flex;
   align-items: center;
-  gap: 10px;
-  line-height: 1.1;
-  padding: 2px 0 4px;
-}
-.nav__brand-text { display: flex; flex-direction: column; gap: 5px; }
-.nav__brand-name {
+  gap: 8px;
   font-family: 'Permanent Marker', cursive;
   font-size: 22px;
   letter-spacing: -0.6px;
-  line-height: 1;
-}
-.nav__brand-tag {
-  font-family: 'Comic Neue', 'Comic Sans MS', cursive;
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--mute);
-  letter-spacing: 0.02em;
   line-height: 1;
 }
 .nav__crown { width: 36px !important; height: auto !important; display: block; }
@@ -197,12 +186,11 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 .hero {
   position: relative;
   min-height: 100svh;
-  width: 100%;
-  max-width: var(--frame);
+  width: min(var(--max), 100%);
   margin: 0 auto;
-  padding: clamp(124px, 14vw, 150px) max(16px, calc((100% - var(--frame)) / 2)) clamp(72px, 10vw, 90px);
+  padding: 130px var(--gutter) 90px;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 1fr);
+  grid-template-columns: 1.05fr 1fr;
   align-items: center;
   gap: clamp(20px, 4vw, 60px);
   overflow: visible;
@@ -211,9 +199,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 .hero__copy {
   position: relative;
   z-index: 2;
-  width: 100%;
-  max-width: 560px;
-  justify-self: start;
+  min-width: 0;
 }
 .hero__copy,
 .exact-hero-title,
@@ -274,13 +260,17 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   transform: rotate(-6deg);
   box-shadow: 3px 3px 0 #000;
 }
-.exact-hero-title { width: min(560px, 100%); }
+.exact-hero-title {
+  width: min(560px, 100%);
+  margin-bottom: 2px;
+}
 .hero-title-line {
   display: inline-flex;
   align-items: flex-end;
   width: 100%;
   white-space: nowrap;
   line-height: 0;
+  min-height: clamp(72px, 12.5vw, 148px);
 }
 .hero-title-letter {
   display: block;
@@ -313,16 +303,19 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 .underline path { fill: none; stroke: #000; stroke-width: 6; stroke-linecap: round; }
 .hero-subtitle { margin: 0 0 26px; max-width: 30ch; font-size: clamp(21px, 1.8vw, 27px); line-height: 1.2; }
 .contract-box {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
   width: min(560px, 100%);
+  max-width: 100%;
   min-height: 52px;
-  border: 3px solid #000;
+  border: 3px dashed #000;
   background: #fff;
-  padding: 6px 8px 6px 12px;
-  box-shadow: 4px 4px 0 #000;
-  transform: rotate(-0.4deg);
+  padding: 8px 8px 8px 16px;
+  margin-bottom: 24px;
+  border-radius: var(--wob-3);
+  box-shadow: none;
+  transform: none;
 }
 .contract-box span { font-family: 'Permanent Marker', cursive; font-size: 20px; }
 .contract-box code {
@@ -356,8 +349,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   display: grid;
   place-items: center;
   width: 100%;
-  min-height: min(560px, 72vh);
-  justify-self: stretch;
+  min-height: 0;
 }
 .hero__mascot {
   position: relative;
@@ -365,14 +357,14 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   aspect-ratio: 1;
   will-change: transform;
   pointer-events: none;
-  justify-self: center;
 }
 .mascot-pivot { width: 100%; height: 100%; transform-style: preserve-3d; pointer-events: none; }
 .hero__mascot img, .mascot-img {
   width: 100% !important;
   height: 100% !important;
   object-fit: contain;
-  object-position: center bottom;
+  object-position: center center;
+  mix-blend-mode: multiply;
   display: block;
   pointer-events: none;
   -webkit-user-drag: none;
@@ -707,47 +699,62 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
     center / contain no-repeat;
 }
 
+.outro-shell {
+  background: #000;
+  width: 100%;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
 .outro {
   position: relative;
   overflow: hidden;
-  padding: clamp(80px, 10vw, 140px) max(16px, calc((100% - var(--frame)) / 2)) 40px;
+  padding: clamp(80px, 10vw, 140px) var(--gutter) clamp(56px, 8vw, 80px);
   background: #000;
   color: #fff;
   text-align: center;
   width: 100%;
+  margin: 0 auto;
+  min-height: min(920px, 100svh);
   border-radius: 60px 60px 0 0 / 40px 40px 0 0;
 }
-.outro__word {
+.roadmap.section {
+  padding-bottom: clamp(64px, 10vw, 120px);
+}
+.outro__big {
   display: flex;
   justify-content: center;
-  margin: 0 0 clamp(16px, 3vw, 28px);
-  width: 100%;
+  gap: 0.12em;
+  margin: 0;
   font-family: 'Permanent Marker', cursive;
-  font-size: clamp(56px, 14vw, 120px);
+  font-size: clamp(90px, 22vw, 340px);
   font-weight: 400;
-  line-height: 0.85;
-  letter-spacing: -2px;
-  position: relative;
-  z-index: 2;
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  filter: url(#boil);
+  pointer-events: none;
 }
+.outro__big span { display: inline-block; }
 .outro__peek {
-  width: clamp(160px, 22vw, 280px);
-  margin: clamp(24px, 4vw, 40px) auto 0;
+  width: clamp(180px, 24vw, 300px);
+  margin: clamp(-10vw, -72px, -36px) auto 0;
   background: #fff;
   border-radius: 50% 50% 46% 54% / 56% 52% 48% 44%;
   border: 3px solid #fff;
   overflow: hidden;
   aspect-ratio: 1;
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  padding: 6%;
 }
-.outro__peek img {
+.outro__peek img,
+.outro__peek-img {
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover;
-  object-position: 52% 38%;
-  transform: scale(1.22) translateX(3%);
-  transform-origin: center center;
+  object-fit: contain !important;
+  object-position: center 22% !important;
+  transform: none !important;
+  mix-blend-mode: multiply;
 }
 .outro__cta {
   display: grid;
@@ -831,16 +838,15 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   .buy .card__img img { max-height: 52vh; }
   .hero {
     grid-template-columns: 1fr;
-    padding-top: 118px;
+    padding: 110px var(--gutter) 72px;
     text-align: left;
   }
-  .hero__copy { max-width: none; }
-  .hero__art { order: -1; min-height: 0; }
+  .hero__art { order: -1; }
   .hero__mascot { width: min(380px, 86vw); }
-  .nav__brand-tag { font-size: 12px; }
+  .hero-title-line { min-height: clamp(56px, 18vw, 96px); }
   .hero-subtitle br { display: none; }
   .story-title { font-size: clamp(34px, 10vw, 48px); }
-  .outro__word { flex-wrap: wrap; justify-content: center; font-size: clamp(40px, 12vw, 72px); }
+  .outro__big { font-size: clamp(56px, 18vw, 140px); flex-wrap: wrap; }
 }
 
 @media (max-height: 760px) and (min-width: 861px) {

@@ -501,12 +501,19 @@ function mountMotion(
       });
       cleanups.push(() => pieLabelPop.kill());
     }
-    gsap.from('.outro__word .ch', {
+    gsap.from('.outro__big span', {
       yPercent: 120,
-      stagger: 0.045,
-      duration: 0.75,
-      ease: 'back.out(1.8)',
-      scrollTrigger: { trigger: '.outro', start: 'top 72%' },
+      rotate: (i) => (i - 0.5) * 20,
+      stagger: 0.12,
+      duration: 1.1,
+      ease: 'back.out(1.4)',
+      scrollTrigger: { trigger: '.outro', start: 'top 75%', toggleActions: 'play none none reverse' },
+    });
+    gsap.from('.outro__peek', {
+      yPercent: 70,
+      rotate: -15,
+      ease: 'none',
+      scrollTrigger: { trigger: '.outro__peek', start: 'top bottom', end: 'top 55%', scrub: 1 },
     });
 
     const reveal = '.stat.tilt, .step.tilt, .facts .tilt, .phase.tilt, .outro .tilt';

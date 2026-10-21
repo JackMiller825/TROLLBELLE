@@ -211,10 +211,7 @@ function Header() {
       <nav aria-label="Main navigation" className="top-nav">
         <a className="nav__brand" href="#top" onClick={close} aria-label="Back to top">
           <IconArt file="ref-header-crown.png" className="nav__crown" />
-          <span className="nav__brand-text">
-            <span className="nav__brand-name">{site.ticker}</span>
-            <span className="nav__brand-tag">ethereum · uniswap</span>
-          </span>
+          <span>{site.ticker}</span>
         </a>
         <div className={`nav-center${open ? ' shown' : ''}`}>
           <a href="#stats" onClick={close}>stats</a>
@@ -551,29 +548,32 @@ function Roadmap() {
 
 function Outro() {
   return (
-    <footer className="outro" id="outro">
-      <h2 className="outro__word" aria-label="Trollbelle">
-        <Chars text="TROLLBELLE" />
-        <span className="sr-only">Trollbelle</span>
-      </h2>
-      <div className="outro__peek tilt">
-        <IconArt file="trollbelle-hero-transparent.png" alt="" />
-      </div>
-      <div className="outro__cta">
-        <BuyLink className="btn btn--solid outro__buy">buy {site.ticker.toLowerCase()}</BuyLink>
-        <div className="outro__row">
-          <Social href={site.x} soon="X link drops at launch" className="btn">x / twitter</Social>
-          <Social href={site.telegram} soon="telegram opens at launch" className="btn">telegram</Social>
-          <Social href={dexscreenerUrl} soon="chart drops at launch" className="btn">dexscreener</Social>
+    <div className="outro-shell">
+      <footer className="outro" id="outro">
+        <div className="outro__big" aria-hidden="true">
+          <span>TROLL</span>
+          <span>BELLE</span>
         </div>
-      </div>
-      <p className="risk-footnote">
-        $TROLLBELLE is a memecoin with no intrinsic value or expectation of financial return.
-        no team promises, no roadmap guarantees — just a doodle with a grin.
-        Crypto assets may lose all value. not financial advice. DYOR.
-      </p>
-      <p className="outro__copy">© 2026 {site.ticker} · drawn with a mouse, one-handed</p>
-    </footer>
+        <div className="outro__peek">
+          <IconArt className="outro__peek-img" file="trollbelle-hero-transparent.png" alt="" />
+        </div>
+        <h2 className="sr-only">Trollbelle</h2>
+        <div className="outro__cta">
+          <BuyLink className="btn btn--solid outro__buy">buy {site.ticker.toLowerCase()}</BuyLink>
+          <div className="outro__row">
+            <Social href={site.x} soon="X link drops at launch" className="btn">x / twitter</Social>
+            <Social href={site.telegram} soon="telegram opens at launch" className="btn">telegram</Social>
+            <Social href={dexscreenerUrl} soon="chart drops at launch" className="btn">dexscreener</Social>
+          </div>
+        </div>
+        <p className="risk-footnote">
+          $TROLLBELLE is a memecoin with no intrinsic value or expectation of financial return.
+          no team promises, no roadmap guarantees — just a doodle with a grin.
+          Crypto assets may lose all value. not financial advice. DYOR.
+        </p>
+        <p className="outro__copy">© 2026 {site.ticker} · drawn with a mouse, one-handed</p>
+      </footer>
+    </div>
   );
 }
 
