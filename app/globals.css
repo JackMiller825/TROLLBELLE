@@ -781,13 +781,13 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 165% !important;
-  height: 165% !important;
+  width: 100% !important;
+  height: 100% !important;
   max-width: none;
   object-fit: cover !important;
-  object-position: center 12% !important;
-  transform: translate(-50%, -48%) !important;
-  transform-origin: center center;
+  object-position: 50% 16% !important;
+  transform: translate(-50%, -50%) scale(3.85) !important;
+  transform-origin: 50% 21% !important;
   mix-blend-mode: multiply;
 }
 .outro__cta {
