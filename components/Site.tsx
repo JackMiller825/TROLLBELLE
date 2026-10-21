@@ -442,9 +442,9 @@ function Buy() {
           </article>
         ))}
       </div>
-      <svg className="buy-arrow" viewBox="0 0 900 70" preserveAspectRatio="none" aria-hidden="true">
-        <path className="buy-arrow__path" d="M16 36 C 160 66, 300 8, 460 34 S 740 64, 860 22" />
-        <path className="buy-arrow__head" d="M832 12 L868 22 L836 40" />
+      <svg className="buy-arrow boil" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true">
+        <path className="buy-arrow__path" d="M20 80 C 160 10, 300 110, 480 60 S 800 10, 960 70" />
+        <path className="buy-arrow__head" d="M930 50 L962 72 L926 86" />
       </svg>
       <p className="buy-note">
         write the recovery phrase on paper. do not show it to anyone, not even trollbelle.

@@ -457,17 +457,20 @@ function mountMotion(
       window.clearTimeout(refreshTimer);
     });
 
-    const arrow = document.querySelector('.buy-arrow__path') as SVGPathElement | null;
-    if (arrow) {
-      arrow.setAttribute('pathLength', '1');
-      arrow.style.strokeDasharray = '1 1';
-      arrow.style.strokeDashoffset = '1';
-      gsap.to(arrow, {
-        strokeDashoffset: 0,
-        duration: 1.15,
-        ease: 'power2.out',
+    const arrowParts = gsap.utils.toArray<SVGPathElement>('.buy-arrow path');
+    if (arrowParts.length) {
+      arrowParts.forEach((part) => {
+        part.setAttribute('pathLength', '1');
+        part.style.strokeDasharray = '1 1';
+        part.style.strokeDashoffset = '1';
+      });
+      const arrowDraw = gsap.timeline({
         scrollTrigger: { trigger: '.buy', start: 'top 62%', toggleActions: 'play none none reverse' },
       });
+      arrowDraw
+        .to('.buy-arrow__path', { strokeDashoffset: 0, duration: 1.15, ease: 'power2.out' })
+        .to('.buy-arrow__head', { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, '-=0.12');
+      cleanups.push(() => arrowDraw.kill());
     }
     const pie = document.querySelector('.pie__fill') as SVGGeometryElement | null;
     if (pie) {
