@@ -45,9 +45,9 @@ const phases: Array<{ name: string; items: Array<{ text: string; done?: boolean 
   {
     name: 'la',
     items: [
-      { text: 'the lore keeps glitching out' },
+      { text: 'five deleted files return' },
       { text: 'cex? maybe. memes first.' },
-      { text: 'punk princess forever' },
+      { text: 'troll belle forever' },
     ],
   },
 ];
@@ -458,8 +458,10 @@ function Tokenomics() {
     ['ownership', 'renounced'],
   ];
   return (
-    <section className="screen tokenomics" id="tokenomics" aria-labelledby="tokenomics-heading">
-      <h2 className="section__title" id="tokenomics-heading" aria-label="troll-nomics"><Chars text="troll-nomics" /></h2>
+    <section className="section tokenomics" id="tokenomics" aria-labelledby="tokenomics-heading">
+      <div className="section__head">
+        <h2 className="section__title" id="tokenomics-heading" aria-label="troll-nomics"><Chars text="troll-nomics" /></h2>
+      </div>
       <div className="tokenomics__wrap">
         <div className="pie">
           <svg viewBox="0 0 300 300" aria-hidden="true">
@@ -474,7 +476,7 @@ function Tokenomics() {
             />
           </svg>
           <div className="pie__label">
-            <b>100%</b>
+            <b aria-label="100 percent"><span className="pie__pct">0</span>%</b>
             <span>for the hand</span>
           </div>
         </div>
@@ -490,7 +492,7 @@ function Tokenomics() {
 
 function Roadmap() {
   return (
-    <section className="screen roadmap" id="roadmap" aria-labelledby="roadmap-heading">
+    <section className="section roadmap" id="roadmap" aria-labelledby="roadmap-heading">
       <div className="section__head">
         <h2 className="section__title" id="roadmap-heading" aria-label="troll-map"><Chars text="troll-map" /></h2>
       </div>
@@ -516,19 +518,21 @@ function Roadmap() {
 
 function Outro() {
   return (
-    <footer className="screen outro" id="outro">
+    <footer className="outro" id="outro">
       <h2 className="outro__word" aria-label="Trollbelle">
         <Chars text="TROLLBELLE" />
         <span className="sr-only">Trollbelle</span>
       </h2>
-      <div className="outro__face tilt">
+      <div className="outro__peek tilt">
         <IconArt file="trollbelle-hero-transparent.png" alt="" />
       </div>
-      <BuyLink className="btn btn--solid outro__buy">buy {site.ticker.toLowerCase()}</BuyLink>
-      <div className="outro__row">
-        <Social href={site.x} soon="X link drops at launch" className="btn">x / twitter</Social>
-        <Social href={site.telegram} soon="telegram opens at launch" className="btn">telegram</Social>
-        <Social href={dexscreenerUrl} soon="chart drops at launch" className="btn">dexscreener</Social>
+      <div className="outro__cta">
+        <BuyLink className="btn btn--solid outro__buy">buy {site.ticker.toLowerCase()}</BuyLink>
+        <div className="outro__row">
+          <Social href={site.x} soon="X link drops at launch" className="btn">x / twitter</Social>
+          <Social href={site.telegram} soon="telegram opens at launch" className="btn">telegram</Social>
+          <Social href={dexscreenerUrl} soon="chart drops at launch" className="btn">dexscreener</Social>
+        </div>
       </div>
       <p className="risk-footnote">
         $TROLLBELLE is a memecoin with no intrinsic value or expectation of financial return.

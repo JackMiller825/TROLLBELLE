@@ -26,7 +26,7 @@ One screen: a large title, four framed Ethereum doodles (`buy-1.png` … `buy-4.
 
 ## 7. Troll-nomics & Troll-map
 
-Each one is its own screen. The black ring is labeled **100% / for the hand**. The rows read supply **1B**, tax **0%**, lp **burnt**, ownership **renounced**. There is no launch row. The map’s only checked boxes are “draw the creature” and “website is up”.
+From **troll-nomics** through the footer, layout follows tralala: content-height sections (not full-viewport), then a rounded black outro. The ring scrubs in on scroll and the center label counts **0→100%** with **for the hand**. Rows: supply **1B**, tax **0%**, lp **burnt**, ownership **renounced**. **Troll-map** is three phases — **troll**, **belle**, **la** — with only “draw the creature” and “this site goes live” struck through.
 
 ## 8. Social/footer
 

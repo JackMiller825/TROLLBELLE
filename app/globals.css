@@ -153,6 +153,25 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 .section__title .ch, .story-title .ch, .outro__word .ch { display: inline-block; }
 .section__kicker { margin: 6px 0 0; font-size: 18px; }
 
+.section {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(80px, 12vw, 140px) max(16px, calc((100% - var(--frame)) / 2)) clamp(56px, 9vw, 100px);
+  height: auto;
+  min-height: 0;
+  display: block;
+  overflow: visible;
+}
+.section__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 32px;
+  margin-bottom: clamp(32px, 5vw, 64px);
+}
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(260px, 0.82fr);
@@ -468,7 +487,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   grid-template-columns: 1fr 1.2fr;
   gap: clamp(30px, 6vw, 90px);
   align-items: center;
-  margin-top: 18px;
+  margin-top: 0;
 }
 .pie { position: relative; width: min(420px, 100%); margin: 0 auto; aspect-ratio: 1; }
 .pie svg { width: 100%; height: 100%; overflow: visible; }
@@ -518,12 +537,11 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 .facts li span { color: var(--mute); font-size: 20px; font-weight: 400; text-transform: lowercase; }
 .facts b { font-family: 'Permanent Marker', cursive; font-size: clamp(24px, 2.4vw, 34px); font-weight: 400; text-align: right; }
 
-.section__head { width: 100%; }
 .phases {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: clamp(18px, 2.4vw, 30px);
-  margin-top: 18px;
+  margin-top: 0;
 }
 .phase.card {
   padding: 26px 26px 28px;
@@ -579,12 +597,14 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 }
 
 .outro {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(80px, 10vw, 140px) max(16px, calc((100% - var(--frame)) / 2)) 40px;
   background: #000;
   color: #fff;
-  align-items: center;
   text-align: center;
   width: 100%;
-  gap: 8px;
+  border-radius: 60px 60px 0 0 / 40px 40px 0 0;
 }
 .outro__word {
   display: flex;
@@ -592,28 +612,47 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   margin: 0;
   width: 100%;
   font-family: 'Permanent Marker', cursive;
-  font-size: clamp(48px, 9vw, 132px);
+  font-size: clamp(56px, 14vw, 120px);
   font-weight: 400;
-  line-height: 0.9;
+  line-height: 0.85;
   letter-spacing: -2px;
 }
-.outro__face {
-  width: min(220px, 28vh);
-  height: min(220px, 28vh);
-  border-radius: 50%;
+.outro__peek {
+  width: clamp(160px, 22vw, 280px);
+  margin: -1vw auto 0;
   background: #fff;
+  border-radius: 50% 50% 46% 54% / 56% 52% 48% 44%;
+  border: 3px solid #fff;
   overflow: hidden;
-  display: grid;
-  place-items: center;
-  margin: 6px 0;
+  aspect-ratio: 1;
 }
-.outro__face img { width: 86% !important; height: 86% !important; object-fit: contain; object-position: center top; }
+.outro__peek img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  object-position: 30% 20%;
+  transform: scale(1.35);
+  transform-origin: 30% 20%;
+}
+.outro__cta {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  margin: 44px 0 50px;
+}
 .outro__buy { font-size: clamp(22px, 3vw, 32px); padding: 10px 18px 12px; }
-.outro__row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-.outro .btn { background: #fff; color: #000; }
+.outro__row { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+.outro .btn { background: #fff; color: #000; box-shadow: 4px 4px 0 #8a8a8a; }
 .outro .btn--solid { background: #fff; color: #000; }
-.outro .risk-footnote { max-width: 680px; margin: 10px 0 0; color: #fff; font-size: 12px; font-weight: 700; line-height: 1.35; }
-.outro__copy { margin: 4px 0 0; font-size: 12px; }
+.outro .risk-footnote {
+  max-width: 62ch;
+  margin: 0 auto 16px;
+  color: #b5b5b5;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.45;
+}
+.outro__copy { margin: 0; color: #8a8a8a; font-size: 16px; font-weight: 400; }
 
 .comparison-overlay {
   position: absolute;

@@ -472,14 +472,44 @@ function mountMotion(
         .to('.buy-arrow__head', { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, '-=0.12');
       cleanups.push(() => arrowDraw.kill());
     }
-    const pie = document.querySelector('.pie__fill') as SVGGeometryElement | null;
-    if (pie) {
-      gsap.to(pie, {
-        strokeDashoffset: 0,
-        duration: 1.35,
-        ease: 'power2.out',
-        scrollTrigger: { trigger: '.tokenomics', start: 'top 65%', toggleActions: 'play none none reverse' },
+    const pieFill = document.querySelector('.pie__fill') as SVGPathElement | null;
+    const piePct = document.querySelector('.pie__pct');
+    if (pieFill) {
+      pieFill.setAttribute('pathLength', '1');
+      pieFill.style.strokeDasharray = '1 1';
+      pieFill.style.strokeDashoffset = '1';
+      const pieRing = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.pie',
+          start: 'top 80%',
+          end: 'center 50%',
+          scrub: 1,
+        },
       });
+      pieRing.to(pieFill, { strokeDashoffset: 0, ease: 'none' }, 0);
+      if (piePct) {
+        const counter = { value: 0 };
+        pieRing.to(
+          counter,
+          {
+            value: 100,
+            ease: 'none',
+            onUpdate: () => {
+              piePct.textContent = String(Math.round(counter.value));
+            },
+          },
+          0,
+        );
+      }
+      cleanups.push(() => pieRing.kill());
+      const pieLabelPop = gsap.from('.pie__label b', {
+        scale: 0,
+        rotate: -40,
+        duration: 1,
+        ease: 'elastic.out(1, 0.4)',
+        scrollTrigger: { trigger: '.pie', start: 'top 65%', toggleActions: 'play none none reverse' },
+      });
+      cleanups.push(() => pieLabelPop.kill());
     }
     gsap.from('.outro__word .ch', {
       yPercent: 120,
