@@ -211,7 +211,10 @@ function Header() {
       <nav aria-label="Main navigation" className="top-nav">
         <a className="nav__brand" href="#top" onClick={close} aria-label="Back to top">
           <IconArt file="ref-header-crown.png" className="nav__crown" />
-          <span>{site.ticker}</span>
+          <span className="nav__brand-text">
+            <span className="nav__brand-name">{site.ticker}</span>
+            <span className="nav__brand-tag">ethereum · uniswap</span>
+          </span>
         </a>
         <div className={`nav-center${open ? ' shown' : ''}`}>
           <a href="#stats" onClick={close}>stats</a>
@@ -504,8 +507,10 @@ function Tokenomics() {
             />
           </svg>
           <div className="pie__label">
-            <b aria-label="100 percent"><span className="pie__pct">0</span>%</b>
-            <span>for the hand</span>
+            <span className="pie__pct-ticket" aria-label="100 percent">
+              <span className="pie__pct">0</span><span className="pie__pct-sym">%</span>
+            </span>
+            <span className="pie__hand">for the hand</span>
           </div>
         </div>
         <ul className="facts">

@@ -492,7 +492,7 @@ function mountMotion(
         );
       }
       cleanups.push(() => pieRing.kill());
-      const pieLabelPop = gsap.from('.pie__label b', {
+      const pieLabelPop = gsap.from('.pie__pct-ticket', {
         scale: 0,
         rotate: -40,
         duration: 1,
