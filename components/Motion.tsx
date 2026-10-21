@@ -300,8 +300,6 @@ function mountMotion(
     gsap.set('.hero-subtitle, .contract-box, .hero__cta, .bubble', { y: 28, opacity: 0 });
     gsap.set('.left-doodle', { rotation: -12, scale: 0, opacity: 0 });
     gsap.set('.right-doodle', { rotation: -11, scale: 0, opacity: 0 });
-    gsap.set('.hero-crown', { rotation: 8, scale: 0, opacity: 0 });
-    gsap.set('.hero-star', { scale: 0, opacity: 0 });
     gsap.set('.scroll-hint', { opacity: 0, y: 12 });
 
     function heroIntro() {
@@ -309,7 +307,7 @@ function mountMotion(
       tl.to(title, { y: 0, scale: 1, opacity: 1, duration: 1.05, ease: 'elastic.out(1, 0.55)' })
         .to('#mascot', { scale: 1, rotation: 0, opacity: 1, duration: 1.15, ease: 'elastic.out(1, 0.5)' }, 0.08)
         .to('.hero-subtitle, .contract-box, .hero__cta, .bubble', { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', stagger: 0.08 }, 0.35)
-        .to('.left-doodle, .right-doodle, .hero-crown, .hero-star', { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(2.6)', stagger: 0.08 }, 0.45)
+        .to('.left-doodle, .right-doodle', { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(2.6)', stagger: 0.08 }, 0.45)
         .to('.scroll-hint', { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' }, 0.7)
         .add(heroIdle, 0.9);
     }
@@ -319,8 +317,6 @@ function mountMotion(
       gsap.to('.left-doodle', { y: -8, rotation: -16, duration: 1.8, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.right-doodle', { y: -10, rotation: -6, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.sticker--dark', { y: -8, rotation: 8, duration: 1.9, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-      gsap.to('.hero-crown', { rotation: 16, duration: 1.7, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-      gsap.to('.hero-star', { rotation: 360, duration: 12, ease: 'none', repeat: -1 });
       gsap.to('.note', { y: -8, rotation: 10, duration: 1.5, stagger: 0.2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.scroll-hint', { y: 8, duration: 0.8, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to(title, { y: -6, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });

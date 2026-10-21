@@ -1,7 +1,7 @@
 /* Seven full-viewport scenes. Ink is #000, paper is #fff. */
 @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Permanent+Marker&display=swap');
 
-:root { --ink: #000; --paper: #fff; }
+:root { --ink: #000; --paper: #fff; --frame: 1180px; }
 * { box-sizing: border-box; }
 html { scroll-behavior: auto; background: #fff; }
 body {
@@ -37,7 +37,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   z-index: 40;
   top: 12px;
   left: 50%;
-  width: min(1180px, calc(100% - 20px));
+  width: min(var(--frame), calc(100% - 20px));
   transform: translateX(-50%);
   background: #fff;
   border: 3px solid #000;
@@ -109,7 +109,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 96px clamp(18px, 4vw, 72px) 36px;
+  padding: 96px max(16px, calc((100% - var(--frame)) / 2)) 36px;
   overflow: hidden;
 }
 .section__title {
@@ -129,10 +129,11 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(260px, 0.92fr);
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.82fr);
   align-items: center;
-  column-gap: clamp(12px, 3vw, 40px);
+  column-gap: 8px;
 }
+.hero__copy { justify-self: end; width: min(100%, 520px); }
 .hero__hello { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
 .eyes { display: flex; gap: 6px; }
 .eyes span {
@@ -164,7 +165,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   transform: rotate(-6deg);
   box-shadow: 3px 3px 0 #000;
 }
-.exact-hero-title { width: min(100%, 680px); }
+.exact-hero-title { width: 100%; }
 .exact-hero-title img { display: block; width: 100%; height: auto; }
 .alternate-hero-title {
   margin: 0;
@@ -245,10 +246,8 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   line-height: 0.9;
   box-shadow: 3px 3px 0 #000;
 }
-.sticker--light { background: #fff; right: 8%; top: 18%; }
-.sticker--dark { background: #000; color: #fff; right: 2%; bottom: 16%; width: 78px; height: 78px; }
-.hero-crown { position: absolute !important; width: 72px !important; height: auto !important; right: 18%; top: 4%; z-index: 2; }
-.hero-star { position: absolute !important; width: 54px !important; height: auto !important; left: 18%; top: 22%; z-index: 2; }
+.sticker--light { background: #fff; right: 6%; top: 14%; }
+.sticker--dark { background: #000; color: #fff; right: 0; bottom: 12%; width: 78px; height: 78px; }
 .note { position: absolute; font-family: 'Permanent Marker', cursive; font-size: 28px; z-index: 3; }
 .note--a { position: static; font-size: 26px; }
 .note--b { right: 24%; top: 8%; }
@@ -275,7 +274,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 .marquee__group b { font-weight: 400; }
 
 .stats { gap: 14px; }
-.stats__head, .token-id, .stat-grid, .stat-note, .nomics, .phases, .steps, .buy-note { width: min(1100px, 100%); margin-left: auto; margin-right: auto; }
+.stats__head, .token-id, .stat-grid, .stat-note, .nomics, .phases, .steps, .buy-note { width: 100%; margin-left: auto; margin-right: auto; }
 .stats__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
 .pill {
   display: inline-flex;
@@ -327,7 +326,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 
 .story.screen { display: block; height: 100svh; min-height: 100svh; padding: 0; }
 .story__pin { height: 100svh; display: flex; align-items: center; overflow: hidden; }
-.story__track { display: flex; align-items: center; gap: 28px; padding: 0 max(24px, 8vw); will-change: transform; }
+.story__track { display: flex; align-items: center; gap: 28px; padding: 0 8vw 0 max(16px, calc((100vw - var(--frame)) / 2)); will-change: transform; }
 .panel { flex: 0 0 auto; width: min(320px, 34vw); }
 .panel img { display: block; width: 100%; height: auto; max-height: 72vh; object-fit: contain; }
 .panel--intro {
@@ -356,7 +355,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 .step:nth-child(3) { margin-top: 1vh; }
 .step:nth-child(4) { margin-top: 7vh; }
 .step img { display: block; width: 100%; height: auto; max-height: 42vh; object-fit: contain; }
-.buy-arrow { width: min(1100px, 100%); height: 54px; margin: 4px auto 0; display: block; }
+.buy-arrow { width: 100%; height: 54px; margin: 4px auto 0; display: block; }
 .buy-arrow path { fill: none; stroke: #000; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
 .buy-note a { text-decoration: underline; }
 
@@ -491,6 +490,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 
 @media (max-width: 980px) {
   .hero { grid-template-columns: 1fr; }
+  .hero__copy { justify-self: start; width: min(100%, 560px); }
   .hero__art { height: min(52vh, 460px); min-height: 280px; }
   .stat-grid { grid-template-columns: 1fr 1fr; }
   .stat--wide { grid-column: span 2; }

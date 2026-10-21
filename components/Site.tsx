@@ -203,8 +203,6 @@ function Hero() {
         </div>
         <div className="sticker sticker--light right-doodle" aria-hidden="true">100%<br />troll</div>
         <div className="sticker sticker--dark" aria-hidden="true">0%<br />chill</div>
-        <IconArt className="hero-crown" file="ref-graffiti-crown.png" />
-        <IconArt className="hero-star" file="ref-graffiti-star.png" />
         <span className="note note--b" aria-hidden="true">♪</span>
         <span className="note note--c" aria-hidden="true">♪</span>
       </div>
