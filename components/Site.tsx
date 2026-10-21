@@ -149,26 +149,15 @@ function HeroLaughMouth() {
   return (
     <div className="troll-mouth boil" id="troll-mouth" aria-hidden="true">
       <div className="troll-mouth__pivot">
-        <svg className="troll-mouth__svg" viewBox="0 0 132 76" aria-hidden="true">
-          <g className="troll-mouth__upper">
-            <path
-              className="troll-mouth__grin"
-              d="M10 46 C34 14, 98 14, 122 46"
-            />
-            <path className="troll-mouth__wrinkle" d="M18 38 C28 32, 38 36, 48 34" />
-            <path className="troll-mouth__wrinkle" d="M84 34 C94 36, 104 32, 114 38" />
-          </g>
-          <g className="troll-mouth__jaw">
-            <path
-              className="troll-mouth__lip-lower"
-              d="M14 48 C42 68, 90 68, 118 48 C90 58, 42 58, 14 48 Z"
-            />
-            <path
-              className="troll-mouth__teeth"
-              d="M24 46v14 M34 44v16 M44 44v16 M54 44v16 M64 44v16 M74 44v16 M84 44v16 M94 46v14 M104 48v12"
-            />
-          </g>
-        </svg>
+        <Image
+          unoptimized
+          className="troll-mouth__img"
+          src={`${P}trollbelle-mouth.png`}
+          alt=""
+          width={1774}
+          height={887}
+          priority
+        />
       </div>
     </div>
   );

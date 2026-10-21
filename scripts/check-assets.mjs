@@ -8,7 +8,7 @@ for(const entry of manifest.assets){
  if(!fs.existsSync(p)||fs.statSync(p).size<100){console.error('FAIL: missing or empty',entry.file);failures++}
  else if(fs.readFileSync(p).subarray(1,4).toString('ascii')!=='PNG'){console.error('FAIL: not a PNG',entry.file);failures++}
 }
-const mustHave=['ref-hero-lettering.png','ref-live-stats-title.png','who-1.png','who-5.png','buy-1.png','buy-4.png','trollbelle-hero-transparent.png','trollbelle-logo-1024.png'];
+const mustHave=['ref-hero-lettering.png','ref-live-stats-title.png','who-1.png','who-5.png','buy-1.png','buy-4.png','trollbelle-hero-transparent.png','trollbelle-logo-1024.png','trollbelle-mouth.png'];
 for(const f of mustHave) if(!fs.existsSync(path.join(dir,f))){console.error('FAIL: required asset',f);failures++}
 console.log(`${manifest.assets.length} artwork entries checked: ${failures?'FAILED':'OK'}`);
 process.exit(failures?1:0);

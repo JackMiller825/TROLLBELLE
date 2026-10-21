@@ -60,21 +60,21 @@ export default function Motion() {
       </svg>
       <div className="loader" id="loader" role="status" aria-live="polite">
         <div className="loader__inner">
-          <svg className="loader__face" viewBox="0 0 360 210" aria-hidden="true">
-            <path className="lf-draw lf-crown" d="M150 28l12 22 24 2-18 16 6 24-24-14-24 14 6-24-18-16 24-2z" />
-            <path className="lf-draw lf-eye" d="M78 92c18-28 52-26 64 2-16 10-48 10-64-2z" />
-            <path className="lf-draw lf-eye" d="M214 90c20-30 56-24 66 4-18 12-50 10-66-4z" />
-            <circle className="lf-pupil" cx="112" cy="90" r="5" />
-            <circle className="lf-pupil" cx="248" cy="88" r="5" />
-            <rect className="lf-lid" x="70" y="62" width="80" height="0" />
-            <rect className="lf-lid" x="206" y="60" width="82" height="0" />
-            <path className="lf-draw lf-grin" d="M86 132c28 46 150 48 186-6" />
-            <path className="lf-draw lf-tooth" d="M150 138l8 16M176 146l6 16M204 140l8 14" />
-          </svg>
+          <div className="loader__mouth-wrap" aria-hidden="true">
+            <div className="loader__mouth-pivot">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="loader__mouth-img"
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/trollbelle-mouth.png`}
+                alt=""
+                width={640}
+                height={360}
+                decoding="async"
+              />
+            </div>
+          </div>
           <div className="loader__word" aria-hidden="true">
-            {'troll'.split('').map((letter, index) => <span key={`t-${index}`}>{letter}</span>)}
-            <span className="gap" />
-            {'belle'.split('').map((letter, index) => <span key={`b-${index}`}>{letter}</span>)}
+            {'trollbelle'.split('').map((letter, index) => <span key={`l-${index}`}>{letter}</span>)}
           </div>
           <p className="sr-only">Loading Trollbelle</p>
           <svg className="loader__bar" viewBox="0 0 320 28" aria-hidden="true">
@@ -198,34 +198,29 @@ function mountMotion(
     window.addEventListener('troll-live', liveWiggle);
     cleanups.push(() => window.removeEventListener('troll-live', liveWiggle));
 
-    const draw = $$('.lf-draw');
-    draw.forEach((node) => {
-      const path = node as SVGPathElement;
-      path.setAttribute('pathLength', '1');
-      path.style.strokeDasharray = '1 1';
-      path.style.strokeDashoffset = '1';
-    });
     const barFill = $('.lb-fill') as SVGPathElement | null;
     if (barFill) {
       barFill.setAttribute('pathLength', '1');
       barFill.style.strokeDasharray = '1 1';
       barFill.style.strokeDashoffset = '1';
     }
-    gsap.set('.loader__word span:not(.gap)', { opacity: 0, y: 36, rotate: -8 });
-    gsap.set('.lf-pupil', { opacity: 0, transformOrigin: '50% 50%' });
+    gsap.set('.loader__word span', { opacity: 0, y: 36, rotate: -8 });
+    gsap.set('.loader__mouth-img', { scale: 0.55, opacity: 0, transformOrigin: '50% 55%' });
 
     const loader = $('#loader');
     const pctEl = $('#loader-pct');
     const progress = { target: 0, shown: 0 };
     const bump = () => { progress.target = Math.min(1, progress.target + 0.25); };
     if (document.fonts) document.fonts.ready.then(bump).catch(bump);
+    const mouthSrc = document.querySelector<HTMLImageElement>('.loader__mouth-img')?.src;
     const heroSrc = document.querySelector<HTMLImageElement>('.mascot-img')?.currentSrc
       || document.querySelector<HTMLImageElement>('.mascot-img')?.src;
-    if (heroSrc) {
+    [mouthSrc, heroSrc].filter(Boolean).forEach((src) => {
       const preload = new Image();
       preload.onload = preload.onerror = bump;
-      preload.src = heroSrc;
-    } else bump();
+      preload.src = src as string;
+    });
+    if (!mouthSrc && !heroSrc) bump();
     if (document.readyState === 'complete') bump();
     else window.addEventListener('load', bump, { once: true });
     const dwell = window.setTimeout(bump, 450);
@@ -236,18 +231,17 @@ function mountMotion(
 
     const intro = gsap.timeline();
     intro
-      .to('.lf-eye', { strokeDashoffset: 0, duration: 0.7, ease: 'power2.inOut', stagger: 0.12 })
-      .to('.lf-pupil', { opacity: 1, duration: 0.01 }, '-=0.15')
-      .from('.lf-pupil', { scale: 0, duration: 0.45, ease: 'back.out(3)', stagger: 0.08 }, '<')
-      .to('.lf-crown, .lf-grin, .lf-tooth', { strokeDashoffset: 0, duration: 0.55, ease: 'power2.out', stagger: 0.08 }, '-=0.2')
-      .to('.loader__word span:not(.gap)', { opacity: 1, y: 0, rotate: 0, duration: 0.55, ease: 'back.out(2.4)', stagger: 0.045 }, 0.25);
+      .to('.loader__mouth-img', { scale: 1, opacity: 1, duration: 0.62, ease: 'back.out(2.6)' })
+      .to('.loader__word span', { opacity: 1, y: 0, rotate: 0, duration: 0.55, ease: 'back.out(2.4)', stagger: 0.032 }, 0.12);
 
-    const look = gsap.timeline({ repeat: -1, repeatDelay: 0.25, delay: 0.9 });
-    look.to('.lf-pupil', { x: 7, y: -3, duration: 0.28, ease: 'power2.out' })
-      .to('.lf-pupil', { x: -6, y: 3, duration: 0.28, ease: 'power2.out' }, '+=0.35')
-      .to('.lf-pupil', { x: 0, y: 0, duration: 0.24, ease: 'power2.out' }, '+=0.3');
-    const wordBounce = gsap.to('.loader__word span:not(.gap)', {
-      y: -8, duration: 0.38, ease: 'sine.inOut', yoyo: true, repeat: -1, stagger: { each: 0.07, from: 'start' }, delay: 0.9,
+    const loaderLaugh = gsap.timeline({ repeat: -1, delay: 0.55 });
+    loaderLaugh
+      .to('.loader__mouth-pivot', { scaleX: 1.14, scaleY: 0.9, rotation: 3, duration: 0.2, ease: 'sine.in', transformOrigin: '50% 55%' })
+      .to('.loader__mouth-pivot', { scaleX: 0.94, scaleY: 1.12, rotation: -3, duration: 0.2, ease: 'sine.out' })
+      .to('.loader__mouth-pivot', { scaleX: 1.1, scaleY: 0.96, rotation: 2, duration: 0.16, ease: 'sine.inOut' })
+      .to('.loader__mouth-pivot', { scaleX: 1, scaleY: 1, rotation: 0, duration: 0.18, ease: 'sine.out' }, '+=0.04');
+    const wordBounce = gsap.to('.loader__word span', {
+      y: -8, duration: 0.38, ease: 'sine.inOut', yoyo: true, repeat: -1, stagger: { each: 0.06, from: 'start' }, delay: 0.75,
     });
 
     const finishLoader = () => {
@@ -267,15 +261,12 @@ function mountMotion(
           lenis?.scrollTo(0, { immediate: true, force: true });
         }
       } catch { /* keep the reveal moving */ }
-      look.kill();
+      loaderLaugh.kill();
       wordBounce.kill();
       const tl = gsap.timeline({ onComplete: hide });
-      tl.to('.lf-pupil', { x: 0, y: 0, duration: 0.12 })
-        .to('.lf-lid', { attr: { height: 48 }, duration: 0.07, ease: 'power2.in' })
-        .to('.lf-lid', { attr: { height: 0 }, duration: 0.08, ease: 'power2.out' })
-        .to('.loader__word span', { y: -18, opacity: 0, duration: 0.2, stagger: 0.015, ease: 'power2.in' }, '+=0.02')
+      tl.to('.loader__word span', { y: -18, opacity: 0, duration: 0.2, stagger: 0.012, ease: 'power2.in' }, 0)
         .to('.loader__bar, .loader__pct, .loader__hint', { opacity: 0, y: 12, duration: 0.2 }, '<')
-        .to('.loader__face', { scale: 1.12, duration: 0.22, ease: 'back.in(2)' }, '<0.04')
+        .to('.loader__mouth-wrap', { scale: 1.14, duration: 0.22, ease: 'back.in(2)' }, '<0.04')
         .to(loader, { clipPath: 'circle(0% at 50% 42%)', duration: 0.45, ease: 'power2.inOut' }, '-=0.04')
         .call(heroIntro, undefined, '-=0.28');
     };
@@ -337,31 +328,13 @@ function mountMotion(
     }
 
     function heroIdle() {
-      gsap.to('.troll-mouth__jaw', {
-        y: 4,
-        rotation: 3,
-        transformOrigin: '50% 20%',
-        duration: 0.26,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-      });
-      gsap.to('.troll-mouth__upper', {
-        y: -2,
-        duration: 0.26,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-      });
-      gsap.to('.troll-mouth', {
-        scaleX: 1.06,
-        scaleY: 1.03,
-        duration: 0.42,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-        transformOrigin: '50% 65%',
-      });
+      const heroLaugh = gsap.timeline({ repeat: -1 });
+      heroLaugh
+        .to('.troll-mouth__img', { scaleX: 1.14, scaleY: 0.9, rotation: 3, duration: 0.2, ease: 'sine.in', transformOrigin: '50% 55%' })
+        .to('.troll-mouth__img', { scaleX: 0.94, scaleY: 1.12, rotation: -3, duration: 0.2, ease: 'sine.out' })
+        .to('.troll-mouth__img', { scaleX: 1.08, scaleY: 0.96, rotation: 2, duration: 0.16, ease: 'sine.inOut' })
+        .to('.troll-mouth__img', { scaleX: 1, scaleY: 1, rotation: 0, duration: 0.18, ease: 'sine.out' }, '+=0.03');
+      cleanups.push(() => { heroLaugh.kill(); });
       gsap.to('.mascot-img', { y: -12, rotation: 1.4, duration: 2.1, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.left-doodle', { y: -8, rotation: -16, duration: 1.8, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.right-doodle', { y: -10, rotation: -6, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
