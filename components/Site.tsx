@@ -245,7 +245,6 @@ function Stats() {
 
   return (
     <section className="screen stats" id="stats" aria-labelledby="stats-heading">
-      <span className="scribble scribble--tl" aria-hidden="true">boop</span>
       <div className="stats__head">
         <h2 className="section__title" id="stats-heading" aria-label="live troll-stats"><Chars text="live troll-stats" /></h2>
         <span className={`pill${live ? ' is-live' : ''}`}><i />{pill}</span>
@@ -318,7 +317,6 @@ function Story() {
       <div className="story__pin">
         <div className="story__track" id="story-track">
           <article className="panel panel--intro">
-            <span className="scribble" aria-hidden="true">wow</span>
             <h2 className="story-title" id="story-heading" aria-label="who is trollbelle?">
               <span className="line"><Chars text="who is" /></span>
               <span className="line"><Chars text="trollbelle?" /></span>
@@ -346,7 +344,6 @@ function Story() {
 function Buy() {
   return (
     <section className="screen buy" id="buy" aria-labelledby="buy-heading">
-      <span className="scribble scribble--bl" aria-hidden="true">wow</span>
       <h2 className="section__title" id="buy-heading" aria-label="how to buy"><Chars text="how to buy" /></h2>
       <p className="section__kicker">it&apos;s simple. stop overthinking.</p>
       <div className="steps">
@@ -376,15 +373,13 @@ function Buy() {
 
 function Tokenomics() {
   const rows: Array<[string, string]> = [
-    ['supply', site.supply],
-    ['tax', site.tax],
-    ['launch', site.launchType],
-    ['lp', site.liquidity],
-    ['ownership', site.ownership],
+    ['supply', '1B'],
+    ['tax', '0%'],
+    ['lp', 'burnt'],
+    ['ownership', 'renounced'],
   ];
   return (
     <section className="screen tokenomics" id="tokenomics" aria-labelledby="tokenomics-heading">
-      <span className="scribble scribble--tl" aria-hidden="true">♡</span>
       <h2 className="section__title" id="tokenomics-heading" aria-label="troll-nomics"><Chars text="troll-nomics" /></h2>
       <div className="nomics">
         <div className="pie">
@@ -393,8 +388,8 @@ function Tokenomics() {
             <circle className="pie__fill" cx="100" cy="100" r="90" pathLength="1" />
           </svg>
           <div className="pie__label">
-            <strong>planned</strong>
-            <span>not a promise</span>
+            <strong>100%</strong>
+            <span>for the hand</span>
           </div>
           <IconArt className="pie__spark" file="ref-graffiti-star.png" alt="" />
         </div>
@@ -404,7 +399,6 @@ function Tokenomics() {
           ))}
         </ul>
       </div>
-      <p className="stat-note">pending on-chain verification until launch. nothing here is an allocation claim.</p>
     </section>
   );
 }
@@ -412,7 +406,6 @@ function Tokenomics() {
 function Roadmap() {
   return (
     <section className="screen roadmap" id="roadmap" aria-labelledby="roadmap-heading">
-      <span className="scribble scribble--tl" aria-hidden="true">troll!</span>
       <h2 className="section__title" id="roadmap-heading" aria-label="troll-map"><Chars text="troll-map" /></h2>
       <div className="phases">
         {phases.map((phase) => (
@@ -437,8 +430,6 @@ function Roadmap() {
 function Outro() {
   return (
     <footer className="screen outro" id="outro">
-      <span className="la la--a" aria-hidden="true">la!</span>
-      <span className="la la--b" aria-hidden="true">la!</span>
       <h2 className="outro__word" aria-label="Trollbelle">
         <Chars text="TROLLBELLE" />
         <span className="sr-only">Trollbelle</span>

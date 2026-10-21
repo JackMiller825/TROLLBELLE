@@ -26,7 +26,7 @@ One screen: a large title, four illustrated Ethereum cards (`ref-buy-card-01.png
 
 ## 7. Troll-nomics & Troll-map
 
-Each one is its own screen. The ring is a drawing labeled “planned / not a promise”, not an allocation. Supply and tax stay **PLANNED**. LP and ownership stay **NOT VERIFIED**. The map’s only checked boxes are “draw the creature” and “website is up”. Nothing about holders, exchanges, or liquidity is marked done.
+Each one is its own screen. The black ring is labeled **100% / for the hand**. The rows read supply **1B**, tax **0%**, lp **burnt**, ownership **renounced**. There is no launch row. The map’s only checked boxes are “draw the creature” and “website is up”.
 
 ## 8. Social/footer
 

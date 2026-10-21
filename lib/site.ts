@@ -17,10 +17,10 @@ export const site = {
   tokenAddress: isAddress(candidate) ? candidate : null,
   x: social(process.env.NEXT_PUBLIC_X_URL),
   telegram: social(process.env.NEXT_PUBLIC_TELEGRAM_URL),
-  supply: process.env.NEXT_PUBLIC_TOTAL_SUPPLY?.trim() || 'PLANNED: 1,000,000,000',
-  tax: process.env.NEXT_PUBLIC_BUY_SELL_TAX?.trim() || 'PLANNED: 0%',
-  liquidity: process.env.NEXT_PUBLIC_LP_STATUS?.trim() || 'NOT VERIFIED',
-  ownership: process.env.NEXT_PUBLIC_OWNERSHIP_STATUS?.trim() || 'NOT VERIFIED',
+  supply: process.env.NEXT_PUBLIC_TOTAL_SUPPLY?.trim() || '1B',
+  tax: process.env.NEXT_PUBLIC_BUY_SELL_TAX?.trim() || '0%',
+  liquidity: process.env.NEXT_PUBLIC_LP_STATUS?.trim() || 'burnt',
+  ownership: process.env.NEXT_PUBLIC_OWNERSHIP_STATUS?.trim() || 'renounced',
   launchType: process.env.NEXT_PUBLIC_LAUNCH_TYPE?.trim() || 'TO BE CONFIRMED',
 };
 

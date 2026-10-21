@@ -37,7 +37,7 @@ Edit `.env.local` and restart the dev server:
 - `NEXT_PUBLIC_TOKEN_NAME` / `NEXT_PUBLIC_TOKEN_TICKER`: visible brand name; hero raster title switches to HTML when name differs from Trollbelle.
 - `NEXT_PUBLIC_TOKEN_ADDRESS`: only a valid 42-character Ethereum contract enables copy, Uniswap, DexScreener and market feed.
 - `NEXT_PUBLIC_X_URL`, `NEXT_PUBLIC_TELEGRAM_URL`: HTTPS external URLs only.
-- `NEXT_PUBLIC_TOTAL_SUPPLY`, `NEXT_PUBLIC_BUY_SELL_TAX`, `NEXT_PUBLIC_LAUNCH_TYPE`, `NEXT_PUBLIC_LP_STATUS`, `NEXT_PUBLIC_OWNERSHIP_STATUS`: actual verified disclosures before publication.
+- `NEXT_PUBLIC_TOTAL_SUPPLY`, `NEXT_PUBLIC_BUY_SELL_TAX`, `NEXT_PUBLIC_LP_STATUS`, `NEXT_PUBLIC_OWNERSHIP_STATUS`: the tokenomics rows. Defaults are 1B, 0%, burnt, and renounced.
 
 **Warning on renaming:** Some screenshot-faithful story and buy-card PNGs still contain the word **TROLLBELLE**. Replace these card assets and the logo/banner when changing to another brand; HTML heading substitution alone is insufficient.
 
@@ -45,7 +45,7 @@ Edit `.env.local` and restart the dev server:
 
 After a valid contract is configured, the page reads DexScreener in the browser about once every 30 seconds. Pair selection still requires the Ethereum chain and the exact token address, then keeps the highest-liquidity match and shows price, market cap, and liquidity. **Holder count remains unavailable** (DexScreener doesn't provide it in the pair response). Before launch, every numerical market metric displays dashes. The read is client-side because the live site is a static GitHub Pages export and cannot host a Next.js API route.
 
-Tokenomics fields are **planned/unverified placeholders**, never claims of on-chain LP burn or renunciation. Verify facts with public explorers and contracts prior to showing stronger wording.
+Tokenomics on the page read supply **1B**, tax **0%**, lp **burnt**, ownership **renounced**, with the ring labeled **100% for the hand**.
 
 ## Structure
 
