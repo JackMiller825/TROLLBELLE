@@ -312,6 +312,7 @@ function mountMotion(
     const heroLetters = '.hero-title-letter';
     gsap.set(heroLetters, { y: 50, scale: 0.86, opacity: 0, transformOrigin: '50% 100%' });
     gsap.set('#mascot', { scale: 0.55, rotation: -16, opacity: 0, transformOrigin: '50% 90%' });
+    gsap.set('.troll-mouth', { scale: 0.4, opacity: 0, transformOrigin: '50% 65%' });
     gsap.set('.hero-subtitle, .contract-box, .hero__cta, .bubble', { y: 28, opacity: 0 });
     gsap.set('.left-doodle', { rotation: -12, scale: 0, opacity: 0 });
     gsap.set('.right-doodle', { rotation: -11, scale: 0, opacity: 0 });
@@ -328,6 +329,7 @@ function mountMotion(
         stagger: 0.06,
       })
         .to('#mascot', { scale: 1, rotation: 0, opacity: 1, duration: 1.15, ease: 'elastic.out(1, 0.5)' }, 0.08)
+        .to('.troll-mouth', { scale: 1, opacity: 1, duration: 0.75, ease: 'back.out(2.8)' }, 0.2)
         .to('.hero-subtitle, .contract-box, .hero__cta, .bubble', { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', stagger: 0.08 }, 0.35)
         .to('.left-doodle, .right-doodle', { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(2.6)', stagger: 0.08 }, 0.45)
         .to('.scroll-hint', { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' }, 0.7)
@@ -335,6 +337,31 @@ function mountMotion(
     }
 
     function heroIdle() {
+      gsap.to('.troll-mouth__jaw', {
+        y: 4,
+        rotation: 3,
+        transformOrigin: '50% 20%',
+        duration: 0.26,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+      });
+      gsap.to('.troll-mouth__upper', {
+        y: -2,
+        duration: 0.26,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+      });
+      gsap.to('.troll-mouth', {
+        scaleX: 1.06,
+        scaleY: 1.03,
+        duration: 0.42,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        transformOrigin: '50% 65%',
+      });
       gsap.to('.mascot-img', { y: -12, rotation: 1.4, duration: 2.1, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.left-doodle', { y: -8, rotation: -16, duration: 1.8, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.right-doodle', { y: -10, rotation: -6, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
@@ -379,6 +406,33 @@ function mountMotion(
       yPercent: 10, rotation: 3, ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
     });
+
+    const mouthWrap = $('#troll-mouth');
+    const mouthPivot = $('.troll-mouth__pivot');
+    if (mouthWrap && mouthPivot) {
+      gsap.set(mouthPivot, { transformOrigin: '50% 58%' });
+      const mRot = gsap.quickTo(mouthPivot, 'rotation', { duration: 0.2, ease: 'power3.out' });
+      const mX = gsap.quickTo(mouthPivot, 'x', { duration: 0.2, ease: 'power3.out' });
+      const mY = gsap.quickTo(mouthPivot, 'y', { duration: 0.2, ease: 'power3.out' });
+      const mWide = gsap.quickTo(mouthPivot, 'scaleX', { duration: 0.22, ease: 'power3.out' });
+      const mTall = gsap.quickTo(mouthPivot, 'scaleY', { duration: 0.22, ease: 'power3.out' });
+      const trackMouth = (event: PointerEvent) => {
+        const rect = mouthWrap.getBoundingClientRect();
+        const cx = rect.left + rect.width * 0.5;
+        const cy = rect.top + rect.height * 0.58;
+        const dx = event.clientX - cx;
+        const dy = event.clientY - cy;
+        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+        const dist = Math.min(1, Math.hypot(dx, dy) / 280);
+        mRot(angle * 0.28);
+        mX(dx * 0.1);
+        mY(dy * 0.1);
+        mWide(1 + dist * 0.22);
+        mTall(1 - dist * 0.06);
+      };
+      window.addEventListener('pointermove', trackMouth, { passive: true });
+      cleanups.push(() => window.removeEventListener('pointermove', trackMouth));
+    }
 
     const mascot = $('#mascot');
     if (mascot) {
