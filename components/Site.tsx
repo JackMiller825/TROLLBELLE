@@ -147,7 +147,7 @@ function HeroTitleLetters({ word, image }: { word: string; image?: boolean }) {
 
 function HeroLaughMouth() {
   return (
-    <div className="troll-mouth boil" id="troll-mouth" aria-hidden="true">
+    <div className="troll-mouth" id="troll-mouth" aria-hidden="true">
       <div className="troll-mouth__pivot">
         <Image
           unoptimized

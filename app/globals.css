@@ -239,12 +239,18 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   width: 100%;
   transform-origin: 50% 55%;
   will-change: transform;
+  background: #000;
+  border-radius: 42% 48% 44% 46%;
+  overflow: hidden;
+  line-height: 0;
 }
-.troll-mouth__img {
+.troll-mouth__img,
+.loader__mouth-img {
   display: block;
   width: 100%;
   height: auto;
   pointer-events: none;
+  filter: none;
 }
 .bubble {
   display: inline-block;
@@ -896,16 +902,14 @@ html.lenis, html.lenis body { height: auto; }
 .loader__inner { display: grid; justify-items: center; gap: 10px; }
 .loader__mouth-wrap {
   width: min(380px, 86vw);
-  filter: url(#boil-strong);
 }
 .loader__mouth-pivot {
   transform-origin: 50% 55%;
   will-change: transform;
-}
-.loader__mouth-img {
-  display: block;
-  width: 100%;
-  height: auto;
+  background: #000;
+  border-radius: 42% 48% 44% 46%;
+  overflow: hidden;
+  line-height: 0;
 }
 .loader__word { display: flex; flex-wrap: nowrap; font-family: 'Permanent Marker', cursive; font-size: clamp(42px, 8vw, 72px); line-height: 1; letter-spacing: -0.02em; }
 .loader__word span { display: inline-block; }
@@ -960,4 +964,4 @@ html.lenis, html.lenis body { height: auto; }
 html.reduce *, html.reduce *::before, html.reduce *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 html.reduce .loader { display: none !important; }
 html.reduce body.is-loading { overflow: auto; height: auto; }
-html.reduce .boil, html.reduce .loader__mouth-wrap, html.reduce .card__img img, html.reduce .buy-arrow { filter: none; }
+html.reduce .boil, html.reduce .card__img img, html.reduce .buy-arrow { filter: none; }
