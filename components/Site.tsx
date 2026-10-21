@@ -19,10 +19,10 @@ const story = [
 ];
 
 const buySteps = [
-  { title: 'get a wallet', text: 'Download MetaMask or Rabby wallet from the official provider. Write the recovery phrase on paper. Do not show it to anyone, not even trollbelle.', file: 'buy-1.png', w: 1122, h: 1402 },
-  { title: 'get some ETH', text: 'Buy ETH on an exchange and send it to your Ethereum wallet. Keep ETH for network gas.', file: 'buy-2.png', w: 1122, h: 1402 },
-  { title: 'swap on Uniswap', text: 'Open official Uniswap, select Ethereum and verify the exact contract address before swapping.', file: 'buy-3.png', w: 1122, h: 1402 },
-  { title: 'hold & troll', text: 'Make memes and enjoy the community. Memecoins can lose all their value.', file: 'buy-4.png', w: 1122, h: 1402 },
+  { title: 'get a wallet', text: 'Download MetaMask or Rabby wallet from the official provider. Write the recovery phrase on paper. Do not show it to anyone, not even trollbelle.', file: 'ref-buy-card-01.png', w: 657, h: 648 },
+  { title: 'get some ETH', text: 'Buy ETH on an exchange and send it to your Ethereum wallet. Keep ETH for network gas.', file: 'ref-buy-card-02.png', w: 747, h: 645 },
+  { title: 'swap on Uniswap', text: 'Open official Uniswap, select Ethereum and verify the exact contract address before swapping.', file: 'ref-buy-card-03.png', w: 756, h: 651 },
+  { title: 'hold & troll', text: 'Make memes and enjoy the community. Memecoins can lose all their value.', file: 'ref-buy-card-04.png', w: 720, h: 651 },
 ];
 
 const phases: Array<{ name: string; items: Array<{ text: string; done?: boolean }> }> = [
@@ -72,6 +72,7 @@ function IconArt({
       alt={alt}
       width={900}
       height={900}
+      priority={className.includes('mascot-img')}
     />
   );
 }
@@ -91,7 +92,7 @@ function FramedArt({
 }) {
   return (
     <div className="card__img">
-      <Image unoptimized className="boil" src={P + file} alt={alt} width={width} height={height} sizes={sizes} />
+      <Image unoptimized className="boil" src={P + file} alt={alt} width={width} height={height} sizes={sizes} loading="lazy" />
     </div>
   );
 }
@@ -432,10 +433,10 @@ function Story() {
           {story.map((item, i) => (
             <article className="panel panel--card card tilt" key={item.title}>
               <FramedArt
-                file={`who-${i + 1}.png`}
+                file={`ref-story-card-0${i + 1}.png`}
                 alt={`${String(i + 1).padStart(2, '0')} — ${item.text}`}
-                width={1024}
-                height={1536}
+                width={[582, 588, 561, 567, 612][i]}
+                height={[756, 762, 762, 759, 762][i]}
               />
               <h3 className="sr-only">{item.title}</h3>
               <p className="sr-only">{item.text}</p>
@@ -555,7 +556,12 @@ function Outro() {
           <span>BELLE</span>
         </div>
         <div className="outro__peek">
-          <IconArt className="outro__peek-img" file="trollbelle-hero-transparent.png" alt="" />
+          <span
+            className="outro__peek-face"
+            style={{ backgroundImage: `url(${P}trollbelle-hero-transparent.png)` }}
+            role="img"
+            aria-label="Trollbelle face"
+          />
         </div>
         <h2 className="sr-only">Trollbelle</h2>
         <div className="outro__cta">

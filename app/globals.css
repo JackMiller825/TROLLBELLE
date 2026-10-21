@@ -1,5 +1,4 @@
 /* Seven full-viewport scenes. Ink is #000, paper is #fff. */
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Permanent+Marker&display=swap');
 
 :root {
   --ink: #000;
@@ -776,19 +775,14 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   z-index: 2;
   padding: 0;
 }
-.outro__peek img,
-.outro__peek-img {
+.outro__peek-face {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 100% !important;
-  height: 100% !important;
-  max-width: none;
-  object-fit: cover !important;
-  object-position: 50% 16% !important;
-  transform: translate(-50%, -50%) scale(3.85) !important;
-  transform-origin: 50% 21% !important;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: 268%;
+  background-position: 50% 5.5%;
   mix-blend-mode: multiply;
+  pointer-events: none;
 }
 .outro__cta {
   display: grid;
@@ -901,7 +895,7 @@ html.reduce .story__pin { overflow-x: auto; }
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .motion-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
-.loader { position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center; background: #fff; clip-path: circle(150% at 50% 42%); }
+.loader { position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center; background: #fff; clip-path: circle(150% at 50% 42%); cursor: pointer; }
 .loader__inner { display: grid; justify-items: center; gap: 10px; }
 .loader__face { width: min(340px, 78vw); overflow: visible; filter: url(#boil-strong); }
 .lf-draw { fill: none; stroke: #000; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }

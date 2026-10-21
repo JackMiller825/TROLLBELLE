@@ -8,8 +8,8 @@ const rules=[
  ['DexScreener Ethereum pair selection',/chainId\).*ethereum/.test(api)],
  ['Wallet-secret warning',/recovery phrase/.test(ui)],
  ['Contract copy',/navigator\.clipboard\.writeText/.test(ui)],
- ['Five matching story cards',/who-\$\{i \+ 1\}\.png/.test(ui)],
- ['Four matching how-to-buy cards',/buy-1\.png/.test(ui) && /buy-4\.png/.test(ui)],
+ ['Five matching story cards',/ref-story-card-0\$\{i \+ 1\}\.png/.test(ui)],
+ ['Four matching how-to-buy cards',/ref-buy-card-01\.png/.test(ui) && /ref-buy-card-04\.png/.test(ui)],
  ['B/W visual reference path',/REFERENCE_FULLPAGE_1055x1491/.test(ui)],
  ['Financial disclaimer',/Crypto assets may lose all value/.test(ui)],
 ];

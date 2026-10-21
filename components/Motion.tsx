@@ -18,7 +18,8 @@ export default function Motion() {
     let cancelled = false;
     const params = new URLSearchParams(window.location.search);
     const compare = params.get('compare') === '1';
-    const reduce = params.get('reduce') === '1' || compare;
+    const reduce = params.get('reduce') === '1' || compare
+      || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) document.documentElement.classList.add('reduce');
 
     if (reduce) {
@@ -126,7 +127,7 @@ function mountMotion(
     const boilTimer = window.setInterval(() => {
       boilSeed = (boilSeed % 3) + 1;
       noise.forEach((node, index) => node?.setAttribute('seed', String(boilSeed + index * 3)));
-    }, 130);
+    }, 220);
     cleanups.push(() => window.clearInterval(boilTimer));
     const onHide = () => {
       if (document.hidden) window.clearInterval(boilTimer);
@@ -227,9 +228,11 @@ function mountMotion(
     } else bump();
     if (document.readyState === 'complete') bump();
     else window.addEventListener('load', bump, { once: true });
-    const dwell = window.setTimeout(bump, 1400);
-    const safety = window.setTimeout(() => { progress.target = 1; }, 7000);
+    const dwell = window.setTimeout(bump, 450);
+    const safety = window.setTimeout(() => { progress.target = 1; }, 4500);
     cleanups.push(() => { window.clearTimeout(dwell); window.clearTimeout(safety); });
+
+    let loaderFinished = false;
 
     const intro = gsap.timeline();
     intro
@@ -248,13 +251,15 @@ function mountMotion(
     });
 
     const finishLoader = () => {
+      if (loaderFinished) return;
+      loaderFinished = true;
       const hide = () => {
         if (loader) loader.style.display = 'none';
         document.body.classList.remove('is-loading');
         try { lenis?.start(); } catch { /* already started */ }
-        ScrollTrigger.refresh();
+        window.requestAnimationFrame(() => ScrollTrigger.refresh());
       };
-      const hideTimer = window.setTimeout(hide, 1700);
+      const hideTimer = window.setTimeout(hide, 900);
       cleanups.push(() => window.clearTimeout(hideTimer));
       try {
         if (!location.hash) {
@@ -265,23 +270,34 @@ function mountMotion(
       look.kill();
       wordBounce.kill();
       const tl = gsap.timeline({ onComplete: hide });
-      tl.to('.lf-pupil', { x: 0, y: 0, duration: 0.16 })
-        .to('.lf-lid', { attr: { height: 48 }, duration: 0.1, ease: 'power2.in' })
-        .to('.lf-lid', { attr: { height: 0 }, duration: 0.12, ease: 'power2.out' })
-        .to('.lf-lid', { attr: { height: 48 }, duration: 0.08, ease: 'power2.in' }, '+=0.12')
-        .to('.lf-lid', { attr: { height: 0 }, duration: 0.1, ease: 'power2.out' })
-        .to('.loader__word span', { y: -24, opacity: 0, duration: 0.28, stagger: 0.02, ease: 'power2.in' }, '+=0.04')
-        .to('.loader__bar, .loader__pct, .loader__hint', { opacity: 0, y: 16, duration: 0.28 }, '<')
-        .to('.loader__face', { scale: 1.2, duration: 0.32, ease: 'back.in(2)' }, '<0.05')
-        .to(loader, { clipPath: 'circle(0% at 50% 42%)', duration: 0.7, ease: 'power2.inOut' }, '-=0.05')
-        .call(heroIntro, undefined, '-=0.45');
+      tl.to('.lf-pupil', { x: 0, y: 0, duration: 0.12 })
+        .to('.lf-lid', { attr: { height: 48 }, duration: 0.07, ease: 'power2.in' })
+        .to('.lf-lid', { attr: { height: 0 }, duration: 0.08, ease: 'power2.out' })
+        .to('.loader__word span', { y: -18, opacity: 0, duration: 0.2, stagger: 0.015, ease: 'power2.in' }, '+=0.02')
+        .to('.loader__bar, .loader__pct, .loader__hint', { opacity: 0, y: 12, duration: 0.2 }, '<')
+        .to('.loader__face', { scale: 1.12, duration: 0.22, ease: 'back.in(2)' }, '<0.04')
+        .to(loader, { clipPath: 'circle(0% at 50% 42%)', duration: 0.45, ease: 'power2.inOut' }, '-=0.04')
+        .call(heroIntro, undefined, '-=0.28');
     };
+
+    const skipLoader = () => {
+      progress.target = 1;
+      progress.shown = 1;
+      if (pctEl) pctEl.textContent = '100';
+      if (barFill) barFill.style.strokeDashoffset = '0';
+      finishLoader();
+    };
+    if (loader) {
+      loader.addEventListener('click', skipLoader, { once: true });
+      cleanups.push(() => loader.removeEventListener('click', skipLoader));
+    }
 
     const started = performance.now();
     const tick = () => {
-      const timed = Math.min(1, (performance.now() - started) / 2200);
+      const timed = Math.min(1, (performance.now() - started) / 950);
       progress.target = Math.max(progress.target, timed);
-      progress.shown += (Math.min(1, progress.target) - progress.shown) * 0.12;
+      const catchUp = progress.target >= 1 ? 0.42 : 0.2;
+      progress.shown += (Math.min(1, progress.target) - progress.shown) * catchUp;
       if (progress.target >= 0.999 && progress.shown > 0.97) progress.shown = 1;
       if (pctEl) pctEl.textContent = String(Math.round(progress.shown * 100));
       if (barFill) barFill.style.strokeDashoffset = String(1 - progress.shown);
@@ -587,8 +603,13 @@ function mountMotion(
           window.removeEventListener('pointerdown', down);
           window.removeEventListener('pointerup', up);
         });
+        let inkActive = false;
+        const startInk = () => { inkActive = true; };
+        window.setTimeout(startInk, 1200);
+        cleanups.push(() => { inkActive = false; });
+
         const inkTick = () => {
-          if (!ink || !canvas) return;
+          if (!inkActive || !ink || !canvas) return;
           const now = performance.now();
           while (pts.length && now - pts[0].t > 420) pts.shift();
           ink.setTransform(1, 0, 0, 1, 0, 0);
