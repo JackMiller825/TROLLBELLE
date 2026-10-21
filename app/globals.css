@@ -393,28 +393,47 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 
 .story.screen { display: block; height: 100svh; min-height: 100svh; padding: 0; }
 .story__pin { height: 100svh; display: flex; align-items: center; overflow: hidden; }
-.story__track { display: flex; align-items: center; gap: 28px; padding: 0 8vw 0 max(16px, calc((100vw - var(--frame)) / 2)); will-change: transform; }
-.panel { flex: 0 0 auto; width: min(320px, 34vw); }
-.panel img { display: block; width: 100%; height: auto; max-height: 72vh; object-fit: contain; }
+.story__track {
+  display: flex;
+  align-items: center;
+  gap: clamp(24px, 4vw, 56px);
+  width: max-content;
+  padding: 0 max(16px, calc((100vw - var(--frame)) / 2));
+  will-change: transform;
+}
+.panel { flex: 0 0 auto; position: relative; }
 .panel--intro {
-  width: min(620px, 48vw);
+  width: clamp(300px, 40vw, 560px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 8px;
   align-self: center;
   flex: none;
+  transform: none !important;
 }
 .story-title {
-  margin: 8px 0;
-  font-family: 'Permanent Marker', cursive;
-  font-size: clamp(42px, 4.4vw, 70px);
-  font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -1px;
+  margin: 0;
+  font-size: clamp(52px, 7.5vw, 96px);
+  line-height: 1.05;
 }
 .story-title .line { display: block; white-space: nowrap; overflow: hidden; padding-bottom: 0.12em; }
-.panel--intro p { margin: 0; font-size: 18px; max-width: 280px; }
+.panel--intro p { margin: 20px 0 0; font-size: clamp(20px, 2.4vh, 24px); font-weight: 400; max-width: 26ch; line-height: 1.25; }
+.panel--card {
+  width: clamp(300px, 30vw, 420px);
+  transform-origin: 50% 50%;
+}
+.story__track > .panel--card:nth-child(2n) { transform: rotate(-1.5deg); }
+.story__track > .panel--card:nth-child(2n + 1) { transform: rotate(1.5deg); }
+.panel__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(78vh, 640px);
+  object-fit: contain;
+  object-position: center top;
+}
+.story.is-static .panel--card { scroll-snap-align: center; }
 
 .buy { gap: 8px; }
 .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: start; margin-top: 12px; }
@@ -564,8 +583,8 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   .nomics, .phases { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr 1fr; }
   .step:nth-child(n) { margin-top: 0; }
-  .panel { width: min(280px, 70vw); }
-  .panel--intro { width: min(78vw, 320px); }
+  .panel--card { width: clamp(260px, 72vw, 380px); }
+  .panel--intro { width: min(78vw, 340px); }
 }
 
 @media (max-width: 860px) {

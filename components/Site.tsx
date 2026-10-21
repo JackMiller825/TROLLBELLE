@@ -379,20 +379,22 @@ function Story() {
       <div className="story__pin">
         <div className="story__track" id="story-track">
           <article className="panel panel--intro">
-            <h2 className="story-title" id="story-heading" aria-label="who is trollbelle?">
+            <h2 className="section__title story-title" id="story-heading" aria-label="who is trollbelle?">
               <span className="line"><Chars text="who is" /></span>
               <span className="line"><Chars text="trollbelle?" /></span>
             </h2>
             <p>a short documentary in five doodles.<br />keep scrolling →</p>
           </article>
           {story.map((item, i) => (
-            <article className="panel tilt" key={item.title}>
+            <article className="panel panel--card tilt" key={item.title}>
               <Image
                 unoptimized
+                className="panel__photo"
                 src={`${P}ref-story-card-${String(i + 1).padStart(2, '0')}.png`}
                 alt={`${String(i + 1).padStart(2, '0')} — ${item.text}`}
-                width={600}
-                height={800}
+                width={582}
+                height={756}
+                sizes="(min-width: 861px) 30vw, 72vw"
               />
               <div className="sr-only"><h3>{item.title}</h3><p>{item.text}</p></div>
             </article>
