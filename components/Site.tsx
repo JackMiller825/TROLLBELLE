@@ -9,6 +9,7 @@ import { showToast } from '@/lib/toast';
 import Motion from '@/components/Motion';
 
 const P = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/`;
+const CA_PLACEHOLDER = 'Coming Soon..';
 
 const story = [
   { title: 'the deleted file', text: 'She was just a deleted file... or so they thought.', alt: 'A deleted meme file on an old desktop computer' },
@@ -19,10 +20,10 @@ const story = [
 ];
 
 const buySteps = [
-  { title: 'get a wallet', text: 'Download MetaMask or Rabby wallet from the official provider. Write the recovery phrase on paper. Do not show it to anyone, not even trollbelle.', file: 'ref-buy-card-01.png', w: 657, h: 648 },
-  { title: 'get some ETH', text: 'Buy ETH on an exchange and send it to your Ethereum wallet. Keep ETH for network gas.', file: 'ref-buy-card-02.png', w: 747, h: 645 },
-  { title: 'swap on Uniswap', text: 'Open official Uniswap, select Ethereum and verify the exact contract address before swapping.', file: 'ref-buy-card-03.png', w: 756, h: 651 },
-  { title: 'hold & troll', text: 'Make memes and enjoy the community. Memecoins can lose all their value.', file: 'ref-buy-card-04.png', w: 720, h: 651 },
+  { title: 'get a wallet', text: 'Download MetaMask or Rabby wallet from the official provider. Write the recovery phrase on paper. Do not show it to anyone, not even trollbelle.', file: 'buy-1.png', w: 1122, h: 1402 },
+  { title: 'get some ETH', text: 'Buy ETH on an exchange and send it to your Ethereum wallet. Keep ETH for network gas.', file: 'buy-2.png', w: 1122, h: 1402 },
+  { title: 'swap on Uniswap', text: 'Go to Uniswap, paste the CA, and swap your ETH for $TROLLBELLE.', file: 'buy-3.png', w: 1122, h: 1402 },
+  { title: 'hold & troll', text: "You're in. Now HODL, meme and spread the chaos.", file: 'buy-4.png', w: 1122, h: 1402 },
 ];
 
 const phases: Array<{ name: string; items: Array<{ text: string; done?: boolean }> }> = [
@@ -237,13 +238,14 @@ function Header() {
 function Hero() {
   const [copied, setCopied] = useState(false);
   const [copyFail, setCopyFail] = useState(false);
+  const displayCa = site.tokenAddress || CA_PLACEHOLDER;
   const doCopy = useCallback(async () => {
-    if (!site.tokenAddress) return;
+    const value = site.tokenAddress || CA_PLACEHOLDER;
     try {
-      await navigator.clipboard.writeText(site.tokenAddress);
+      await navigator.clipboard.writeText(value);
       setCopied(true);
       setCopyFail(false);
-      showToast('CA copied');
+      showToast(site.tokenAddress ? 'CA copied' : 'Copied');
       setTimeout(() => setCopied(false), 1500);
     } catch {
       setCopyFail(true);
@@ -277,15 +279,11 @@ function Hero() {
         </p>
         <div className="contract-box" role="group" aria-label="Official contract address">
           <span>CA:</span>
-          <code>{site.tokenAddress || 'dropping at launch...'}</code>
+          <code>{displayCa}</code>
           <button
             type="button"
-            aria-disabled={!site.tokenAddress}
-            aria-label={site.tokenAddress ? 'Copy contract address' : 'Contract not available yet'}
-            onClick={() => {
-              if (!site.tokenAddress) { showToast('CA drops at launch'); return; }
-              doCopy();
-            }}
+            aria-label={site.tokenAddress ? 'Copy contract address' : 'Copy placeholder contract text'}
+            onClick={() => { doCopy(); }}
           >
             {copied ? <Check size={18} /> : <Copy size={18} />}
             <em>copy</em>
@@ -433,10 +431,10 @@ function Story() {
           {story.map((item, i) => (
             <article className="panel panel--card card tilt" key={item.title}>
               <FramedArt
-                file={`ref-story-card-0${i + 1}.png`}
+                file={`who-${i + 1}.png`}
                 alt={`${String(i + 1).padStart(2, '0')} — ${item.text}`}
-                width={[582, 588, 561, 567, 612][i]}
-                height={[756, 762, 762, 759, 762][i]}
+                width={1024}
+                height={1536}
               />
               <h3 className="sr-only">{item.title}</h3>
               <p className="sr-only">{item.text}</p>
