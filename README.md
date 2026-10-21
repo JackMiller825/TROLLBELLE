@@ -52,6 +52,7 @@ Tokenomics fields are **planned/unverified placeholders**, never claims of on-ch
 
 - `app/page.tsx`: route.
 - `components/Site.tsx`: exactly matched section layout and functional controls.
+- `components/Motion.tsx`: loader, smooth scroll, marquee, scroll reveals, cursor, and click effects.
 - `app/globals.css`: layout at reference size and responsive breakpoints.
 - `lib/market.ts`: DexScreener pair selection and browser market fetch.
 - `lib/site.ts`: token/site config and safe external links.

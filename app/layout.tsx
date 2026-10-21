@@ -12,5 +12,5 @@ export const metadata: Metadata = {
   icons: {icon:`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/trollbelle-favicon.png`}
 };
 export default function RootLayout({children}:{children:React.ReactNode}) {
-  return <html lang="en"><body>{children}</body></html>;
+  return <html lang="en"><body className="is-loading">{children}</body></html>;
 }

@@ -5,6 +5,8 @@ import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { Check, Copy, Menu, X } from 'lucide-react';
 import { site, uniswapUrl, dexscreenerUrl } from '@/lib/site';
 import { fetchMarket, formatDollar, formatPrice, type MarketSnapshot } from '@/lib/market';
+import { showToast } from '@/lib/toast';
+import Motion from '@/components/Motion';
 
 const P = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/`;
 const story = [
@@ -24,8 +26,10 @@ const buySteps = [
 function IconArt({file,alt='',className=''}:{file:string;alt?:string;className?:string}){
  return <Image unoptimized className={className} src={P+file} alt={alt} width={900} height={900}/>;
 }
-function Social({href,children}:{href:string|null;children:ReactNode}) {
- return href?<a href={href} target="_blank" rel="noopener noreferrer">{children}</a>:<span className="inactive-link" title="Official link will be added when confirmed">{children}</span>;
+function Social({href,children,label,soon='that link drops at launch'}:{href:string|null;children:ReactNode;label?:string;soon?:string}) {
+ return href
+  ? <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>{children}</a>
+  : <button type="button" className="inactive-link" data-soon={soon} aria-label={label}>{children}</button>;
 }
 function Stats(){
  const [result,setResult]=useState<MarketSnapshot>({status:'unlaunched'});
@@ -38,6 +42,7 @@ function Stats(){
   }
   update();const timer=setInterval(update,30000);return()=>{active=false;clearInterval(timer)};
  },[]);
+ useEffect(()=>{ if(result.status==='live') window.dispatchEvent(new Event('troll-live')); },[result.status]);
  const live=result.status==='live';
  const metrics=[
   {label:'MARKET CAP',value:live?formatDollar(result.marketCap):'--'},
@@ -61,7 +66,7 @@ function Header(){
   <div className={'nav-center '+(open?'shown':'')}>
    <a href="#stats" onClick={close}>stats</a><a href="#story" onClick={close}>story</a><a href="#buy" onClick={close}>how to buy</a><a href="#roadmap" onClick={close}>troll-map</a>
   </div>
-  <div className="nav-social"><Social href={site.x}><span className="social-x" aria-label="X">𝕏</span></Social><Social href={site.telegram}><span className="social-telegram" aria-label="Telegram">➤</span></Social><span className="eth-diamond" title="Ethereum">◇</span></div>
+  <div className="nav-social"><Social href={site.x} label="X" soon="X link drops at launch"><span className="social-x">𝕏</span></Social><Social href={site.telegram} label="Telegram" soon="telegram opens at launch"><span className="social-telegram">➤</span></Social><span className="eth-diamond" title="Ethereum">◇</span></div>
  </nav></header>
 }
 function Hero(){
@@ -69,8 +74,8 @@ function Hero(){
  const [copyFail,setCopyFail]=useState(false);
  const doCopy=useCallback(async()=>{
   if(!site.tokenAddress)return;
-  try{await navigator.clipboard.writeText(site.tokenAddress);setCopied(true);setCopyFail(false);setTimeout(()=>setCopied(false),1500)}
-  catch{setCopyFail(true)}
+  try{await navigator.clipboard.writeText(site.tokenAddress);setCopied(true);setCopyFail(false);showToast('CA copied');setTimeout(()=>setCopied(false),1500)}
+  catch{setCopyFail(true);showToast('Copy failed. Select the address manually.')}
  },[]);
  return <section className="hero" aria-labelledby="hero-heading">
   <div className="left-doodle" aria-hidden>same<br/>internet<br/>different<br/>problems<br/><b>☺</b></div>
@@ -78,10 +83,10 @@ function Hero(){
   <IconArt className="hero-crown" file="ref-graffiti-crown.png"/>
   <div className="hero-subtitle">the punk troll girl who escaped a deleted file<br/> and turned the internet into her playground.</div>
   <div className="contract-box" role="group" aria-label="Official contract address">
-   <span>CA:</span><code>{site.tokenAddress||'dropping at launch...'}</code><button type="button" disabled={!site.tokenAddress} onClick={doCopy} aria-label={site.tokenAddress?'Copy contract address':'Contract not available yet'}>{copied?<Check size={23}/>:<Copy size={23}/>}</button>
+   <span>CA:</span><code>{site.tokenAddress||'dropping at launch...'}</code><button type="button" aria-disabled={!site.tokenAddress} onClick={()=>{ if(!site.tokenAddress){ showToast('CA drops at launch'); return; } doCopy(); }} aria-label={site.tokenAddress?'Copy contract address':'Contract not available yet'}>{copied?<Check size={23}/>:<Copy size={23}/>}</button>
   </div>
   {copyFail&&<span role="status" className="copy-error">Copy failed. Please select the address manually.</span>}
-  <div className="hero-character"><IconArt file="trollbelle-hero-transparent.png" alt="Trollbelle with her famous grin, twin ponytails, spray paint and huge boots"/></div>
+  <div className="hero-character boil" id="mascot-parallax"><div className="mascot-pivot" id="mascot" data-cursor="poke"><IconArt className="mascot-img" file="trollbelle-hero-transparent.png" alt="Trollbelle with her famous grin, twin ponytails, spray paint and huge boots"/></div></div>
   <div className="right-doodle" aria-hidden>troll<br/>everything<br/>belongs<br/>to everyone<br/>♡</div>
   <IconArt className="hero-star" file="ref-graffiti-star.png"/>
   <Stats/>
@@ -89,12 +94,12 @@ function Hero(){
 }
 function Story(){return <section className="story-section" id="story" aria-labelledby="story-heading">
  <div className="section-heading story-heading"><IconArt file="ref-story-title.png" className="ribbon story-ribbon"/><h2 className="sr-only" id="story-heading">Story</h2><p>deleted file.<br/>infinite chaos.</p><span aria-hidden className="understroke">──────</span></div>
- <div className="story-grid">{story.map((s,i)=><article className="card-frame" key={s.title}><Image unoptimized src={`${P}ref-story-card-${String(i+1).padStart(2,'0')}.png`} alt={`${String(i+1).padStart(2,'0')} — ${s.text}`} width={600} height={800} /><div className="sr-only"><h3>{s.title}</h3><p>{s.text}</p></div></article>)}</div>
+ <div className="story-grid">{story.map((s,i)=><article className="card-frame tilt" key={s.title}><Image unoptimized src={`${P}ref-story-card-${String(i+1).padStart(2,'0')}.png`} alt={`${String(i+1).padStart(2,'0')} — ${s.text}`} width={600} height={800} /><div className="sr-only"><h3>{s.title}</h3><p>{s.text}</p></div></article>)}</div>
  </section>}
 function Buy(){return <section className="buy-section" id="buy" aria-labelledby="buy-heading">
  <div className="section-heading buy-heading"><IconArt file="ref-buy-title.png" className="ribbon buy-ribbon"/><h2 className="sr-only" id="buy-heading">How to buy</h2><span className="scribble-star" aria-hidden>✱</span><p>it&apos;s simple.<br/>stop overthinking. ☺</p></div>
- <div className="buy-grid">{buySteps.map((s,i)=><article key={s.title} className="card-frame"><Image unoptimized src={`${P}ref-buy-card-${String(i+1).padStart(2,'0')}.png`} alt={`${i+1} ${s.title}. ${s.text}`} width={660} height={560}/><div className="sr-only"><h3>{s.title}</h3><p>{s.text}</p></div></article>)}</div>
- <div className="buy-links"><Social href={uniswapUrl}>↗ {uniswapUrl?'OPEN UNISWAP':'UNISWAP LINK AFTER LAUNCH'}</Social><span>double-check the CA. never share your seed phrase.</span></div>
+ <div className="buy-grid">{buySteps.map((s,i)=><article key={s.title} className="card-frame tilt"><Image unoptimized src={`${P}ref-buy-card-${String(i+1).padStart(2,'0')}.png`} alt={`${i+1} ${s.title}. ${s.text}`} width={660} height={560}/><div className="sr-only"><h3>{s.title}</h3><p>{s.text}</p></div></article>)}</div>
+ <div className="buy-links"><Social href={uniswapUrl} soon="Uniswap link unlocks at launch">↗ {uniswapUrl?'OPEN UNISWAP':'UNISWAP LINK AFTER LAUNCH'}</Social><span>double-check the CA. never share your seed phrase.</span></div>
  </section>}
 function TokenomicsRoadmap(){
  const rows=[['TOTAL SUPPLY',site.supply],['BUY/SELL TAX',site.tax],['LAUNCH TYPE',site.launchType],['LP',site.liquidity],['OWNERSHIP',site.ownership]];
@@ -106,9 +111,13 @@ function TokenomicsRoadmap(){
   </section>
  </div>;
 }
-function Footer(){return <footer className="footer"><div className="footer-links"><a href="#top" className="footer-crown">♛</a><Social href={site.x}><span className="footer-symbol">𝕏</span> TWITTER/X</Social><Social href={site.telegram}><span className="footer-symbol">➤</span> TELEGRAM</Social><span><span className="footer-symbol">◇</span> ETHEREUM</span><Social href={dexscreenerUrl}><span className="footer-symbol">◈</span> DEXSCREENER</Social><span className="good-trolls">GOOD<br/>TROLLS<br/>ONLY ♡</span></div><p className="risk-footnote">$TROLLBELLE is a fictional meme brand. No returns are promised. Crypto assets may lose all value. Contract, liquidity and ownership status must be independently verified.</p></footer>}
+function MarqueeLine(){ return <>TROLLBELLE <b>✸</b> punk princess <b>✸</b> deleted file <b>✸</b> infinite chaos <b>✸</b> good trolls only <b>✸</b> </>; }
+function Marquee(){
+ return <div className="marquee" aria-hidden="true"><div className="marquee__track" id="marquee"><div className="marquee__group"><MarqueeLine/></div><div className="marquee__group"><MarqueeLine/></div></div></div>;
+}
+function Footer(){return <footer className="footer"><div className="footer-links"><a href="#top" className="footer-crown">♛</a><Social href={site.x} soon="X link drops at launch"><span className="footer-symbol">𝕏</span> TWITTER/X</Social><Social href={site.telegram} soon="telegram opens at launch"><span className="footer-symbol">➤</span> TELEGRAM</Social><span><span className="footer-symbol">◇</span> ETHEREUM</span><Social href={dexscreenerUrl} soon="chart drops at launch"><span className="footer-symbol">◈</span> DEXSCREENER</Social><span className="good-trolls">GOOD<br/>TROLLS<br/>ONLY ♡</span></div><p className="risk-footnote">$TROLLBELLE is a fictional meme brand. No returns are promised. Crypto assets may lose all value. Contract, liquidity and ownership status must be independently verified.</p></footer>}
 export default function Site(){
  const [comparison,setComparison]=useState(false);
  useEffect(()=>{const params=new URLSearchParams(window.location.search);setComparison(params.get('compare')==='1')},[]);
- return <><div className="site-shell"><Header/><main><Hero/><Story/><Buy/><TokenomicsRoadmap/></main><Footer/></div>{comparison&&<div className="comparison-overlay" aria-hidden><Image unoptimized src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/reference/REFERENCE_FULLPAGE_1055x1491.png`} alt="" width={1055} height={1491}/></div>}</>;
+ return <><Motion/><div className="site-shell"><Header/><main><Hero/><Marquee/><Story/><Buy/><TokenomicsRoadmap/></main><Footer/></div>{comparison&&<div className="comparison-overlay" aria-hidden><Image unoptimized src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/reference/REFERENCE_FULLPAGE_1055x1491.png`} alt="" width={1055} height={1491}/></div>}</>;
 }

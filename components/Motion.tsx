@@ -1,0 +1,566 @@
+'use client';
+
+import { useEffect } from 'react';
+import { onToast } from '@/lib/toast';
+
+const WORDS = ['troll!', 'problem?', 'grin!', 'boop', '♪', 'chaos!', 'hey!'];
+const POKES = ['problem, darling?', 'hey! that tickles', 'good trolls only', 'troll!'];
+
+function pick<T>(arr: T[]) {
+  return arr[(Math.random() * arr.length) | 0];
+}
+function rand(a: number, b: number) {
+  return a + Math.random() * (b - a);
+}
+
+export default function Motion() {
+  useEffect(() => {
+    let destroy = () => {};
+    let cancelled = false;
+    const params = new URLSearchParams(window.location.search);
+    const compare = params.get('compare') === '1';
+    const reduce = params.get('reduce') === '1' || compare;
+    if (reduce) document.documentElement.classList.add('reduce');
+
+    if (reduce) {
+      document.body.classList.remove('is-loading');
+      const loader = document.getElementById('loader');
+      if (loader) loader.style.display = 'none';
+      const off = onToast((message) => flashToast(message));
+      return () => off();
+    }
+
+    (async () => {
+      const [{ default: gsap }, { ScrollTrigger }, { default: Lenis }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger'),
+        import('lenis'),
+      ]);
+      if (cancelled) return;
+      destroy = mountMotion(gsap, ScrollTrigger, Lenis);
+    })();
+
+    return () => {
+      cancelled = true;
+      destroy();
+    };
+  }, []);
+
+  return (
+    <>
+      <svg className="motion-defs" aria-hidden="true">
+        <filter id="boil">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="1" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" />
+        </filter>
+        <filter id="boil-strong">
+          <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="4" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="3.4" />
+        </filter>
+      </svg>
+      <div className="loader" id="loader" role="status" aria-live="polite">
+        <div className="loader__inner">
+          <svg className="loader__face" viewBox="0 0 360 210" aria-hidden="true">
+            <path className="lf-draw lf-crown" d="M150 28l12 22 24 2-18 16 6 24-24-14-24 14 6-24-18-16 24-2z" />
+            <path className="lf-draw lf-eye" d="M78 92c18-28 52-26 64 2-16 10-48 10-64-2z" />
+            <path className="lf-draw lf-eye" d="M214 90c20-30 56-24 66 4-18 12-50 10-66-4z" />
+            <circle className="lf-pupil" cx="112" cy="90" r="5" />
+            <circle className="lf-pupil" cx="248" cy="88" r="5" />
+            <rect className="lf-lid" x="70" y="62" width="80" height="0" />
+            <rect className="lf-lid" x="206" y="60" width="82" height="0" />
+            <path className="lf-draw lf-grin" d="M86 132c28 46 150 48 186-6" />
+            <path className="lf-draw lf-tooth" d="M150 138l8 16M176 146l6 16M204 140l8 14" />
+          </svg>
+          <div className="loader__word" aria-hidden="true">
+            {'troll'.split('').map((letter, index) => <span key={`t-${index}`}>{letter}</span>)}
+            <span className="gap" />
+            {'belle'.split('').map((letter, index) => <span key={`b-${index}`}>{letter}</span>)}
+          </div>
+          <p className="sr-only">Loading Trollbelle</p>
+          <svg className="loader__bar" viewBox="0 0 320 28" aria-hidden="true">
+            <path className="lb-outline" d="M6 14h308" />
+            <path className="lb-fill" d="M10 14h300" />
+          </svg>
+          <div className="loader__pct"><span id="loader-pct">0</span>%</div>
+          <p className="loader__hint">warming up the grin…</p>
+        </div>
+      </div>
+      <canvas className="ink" id="ink" aria-hidden="true" />
+      <div className="cursor" id="cursor" aria-hidden="true">
+        <div className="cursor__dot" />
+        <div className="cursor__ring"><span className="cursor__label">troll!</span></div>
+      </div>
+      <div className="fx" id="fx" aria-hidden="true" />
+      <div className="toast" id="toast" role="status" />
+    </>
+  );
+}
+
+function flashToast(message: string) {
+  const toastEl = document.getElementById('toast');
+  if (!toastEl) return;
+  toastEl.textContent = message;
+  toastEl.classList.add('is-show');
+  window.setTimeout(() => toastEl.classList.remove('is-show'), 2200);
+}
+
+function mountMotion(
+  gsap: typeof import('gsap').default,
+  ScrollTrigger: typeof import('gsap/ScrollTrigger').default,
+  Lenis: typeof import('lenis').default,
+) {
+  gsap.registerPlugin(ScrollTrigger);
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (!location.hash) window.scrollTo(0, 0);
+
+  const cleanups: Array<() => void> = [];
+  const ctx = gsap.context(() => {
+    const $ = <T extends Element = HTMLElement>(sel: string) => document.querySelector(sel) as T | null;
+    const $$ = (sel: string) => Array.from(document.querySelectorAll(sel));
+
+    const noise = [
+      document.querySelector('#boil feTurbulence'),
+      document.querySelector('#boil-strong feTurbulence'),
+    ];
+    let boilSeed = 1;
+    const boilTimer = window.setInterval(() => {
+      boilSeed = (boilSeed % 3) + 1;
+      noise.forEach((node, index) => node?.setAttribute('seed', String(boilSeed + index * 3)));
+    }, 130);
+    cleanups.push(() => window.clearInterval(boilTimer));
+    const onHide = () => {
+      if (document.hidden) window.clearInterval(boilTimer);
+    };
+    document.addEventListener('visibilitychange', onHide);
+    cleanups.push(() => document.removeEventListener('visibilitychange', onHide));
+
+    let lenis: InstanceType<typeof Lenis> | null = null;
+    lenis = new Lenis({
+      autoRaf: false,
+      duration: 1.15,
+      smoothWheel: true,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      prevent: (node: HTMLElement) => Boolean(node.closest('.story-grid')),
+    });
+    lenis.on('scroll', ScrollTrigger.update);
+    const ticker = (time: number) => lenis?.raf(time * 1000);
+    gsap.ticker.add(ticker);
+    gsap.ticker.lagSmoothing(0);
+    lenis.stop();
+    cleanups.push(() => {
+      gsap.ticker.remove(ticker);
+      lenis?.destroy();
+    });
+
+    const header = document.querySelector('.header');
+    let lastY = 0;
+    const onScrollNav = (y: number) => {
+      if (!header) return;
+      const menuOpen = document.querySelector('.nav-center')?.classList.contains('shown');
+      if (menuOpen || y < 80 || y < lastY - 4) header.classList.remove('is-hidden');
+      else if (y > 160 && y > lastY + 4) header.classList.add('is-hidden');
+      lastY = y;
+    };
+    const offScroll = lenis.on('scroll', (instance) => onScrollNav(instance.scroll));
+    cleanups.push(offScroll);
+
+    $$('a[href^="#"]').forEach((anchor) => {
+      const onClick = (event: Event) => {
+        const id = anchor.getAttribute('href') || '';
+        const target = id.length > 1 ? document.querySelector(id) : document.getElementById('top');
+        if (!target) return;
+        event.preventDefault();
+        if (lenis) lenis.scrollTo(target as HTMLElement, { offset: id === '#top' ? 0 : -8, duration: 1.2 });
+        else target.scrollIntoView({ behavior: 'smooth' });
+      };
+      anchor.addEventListener('click', onClick);
+      cleanups.push(() => anchor.removeEventListener('click', onClick));
+    });
+
+    const soonClick = (event: Event) => {
+      const button = (event.target as HTMLElement | null)?.closest('[data-soon]');
+      if (!button) return;
+      flashToast(button.getAttribute('data-soon') || 'drops at launch');
+    };
+    document.addEventListener('click', soonClick);
+    cleanups.push(() => document.removeEventListener('click', soonClick));
+    const offToast = onToast(flashToast);
+    cleanups.push(offToast);
+
+    const liveWiggle = () => {
+      gsap.fromTo('.stats-panel', { rotation: 0 }, { rotation: 1.4, duration: 0.12, yoyo: true, repeat: 5, ease: 'power1.inOut' });
+    };
+    window.addEventListener('troll-live', liveWiggle);
+    cleanups.push(() => window.removeEventListener('troll-live', liveWiggle));
+
+    const draw = $$('.lf-draw');
+    draw.forEach((node) => {
+      const path = node as SVGPathElement;
+      path.setAttribute('pathLength', '1');
+      path.style.strokeDasharray = '1 1';
+      path.style.strokeDashoffset = '1';
+    });
+    const barFill = $('.lb-fill') as SVGPathElement | null;
+    if (barFill) {
+      barFill.setAttribute('pathLength', '1');
+      barFill.style.strokeDasharray = '1 1';
+      barFill.style.strokeDashoffset = '1';
+    }
+    gsap.set('.loader__word span:not(.gap)', { opacity: 0, y: 36, rotate: -8 });
+    gsap.set('.lf-pupil', { opacity: 0, transformOrigin: '50% 50%' });
+
+    const loader = $('#loader');
+    const pctEl = $('#loader-pct');
+    const progress = { target: 0, shown: 0 };
+    const bump = () => { progress.target = Math.min(1, progress.target + 0.25); };
+    if (document.fonts) document.fonts.ready.then(bump).catch(bump);
+    const heroSrc = document.querySelector<HTMLImageElement>('.mascot-img')?.currentSrc
+      || document.querySelector<HTMLImageElement>('.mascot-img')?.src;
+    if (heroSrc) {
+      const preload = new Image();
+      preload.onload = preload.onerror = bump;
+      preload.src = heroSrc;
+    } else bump();
+    if (document.readyState === 'complete') bump();
+    else window.addEventListener('load', bump, { once: true });
+    const dwell = window.setTimeout(bump, 1400);
+    const safety = window.setTimeout(() => { progress.target = 1; }, 7000);
+    cleanups.push(() => { window.clearTimeout(dwell); window.clearTimeout(safety); });
+
+    const intro = gsap.timeline();
+    intro
+      .to('.lf-eye', { strokeDashoffset: 0, duration: 0.7, ease: 'power2.inOut', stagger: 0.12 })
+      .to('.lf-pupil', { opacity: 1, duration: 0.01 }, '-=0.15')
+      .from('.lf-pupil', { scale: 0, duration: 0.45, ease: 'back.out(3)', stagger: 0.08 }, '<')
+      .to('.lf-crown, .lf-grin, .lf-tooth', { strokeDashoffset: 0, duration: 0.55, ease: 'power2.out', stagger: 0.08 }, '-=0.2')
+      .to('.loader__word span:not(.gap)', { opacity: 1, y: 0, rotate: 0, duration: 0.55, ease: 'back.out(2.4)', stagger: 0.045 }, 0.25);
+
+    const look = gsap.timeline({ repeat: -1, repeatDelay: 0.25, delay: 0.9 });
+    look.to('.lf-pupil', { x: 7, y: -3, duration: 0.28, ease: 'power2.out' })
+      .to('.lf-pupil', { x: -6, y: 3, duration: 0.28, ease: 'power2.out' }, '+=0.35')
+      .to('.lf-pupil', { x: 0, y: 0, duration: 0.24, ease: 'power2.out' }, '+=0.3');
+    const wordBounce = gsap.to('.loader__word span:not(.gap)', {
+      y: -8, duration: 0.38, ease: 'sine.inOut', yoyo: true, repeat: -1, stagger: { each: 0.07, from: 'start' }, delay: 0.9,
+    });
+
+    const finishLoader = () => {
+      const hide = () => {
+        if (loader) loader.style.display = 'none';
+        document.body.classList.remove('is-loading');
+        try { lenis?.start(); } catch { /* already started */ }
+        ScrollTrigger.refresh();
+      };
+      const hideTimer = window.setTimeout(hide, 1700);
+      cleanups.push(() => window.clearTimeout(hideTimer));
+      try {
+        if (!location.hash) {
+          window.scrollTo(0, 0);
+          lenis?.scrollTo(0, { immediate: true, force: true });
+        }
+      } catch { /* keep the reveal moving */ }
+      look.kill();
+      wordBounce.kill();
+      const tl = gsap.timeline({ onComplete: hide });
+      tl.to('.lf-pupil', { x: 0, y: 0, duration: 0.16 })
+        .to('.lf-lid', { attr: { height: 48 }, duration: 0.1, ease: 'power2.in' })
+        .to('.lf-lid', { attr: { height: 0 }, duration: 0.12, ease: 'power2.out' })
+        .to('.lf-lid', { attr: { height: 48 }, duration: 0.08, ease: 'power2.in' }, '+=0.12')
+        .to('.lf-lid', { attr: { height: 0 }, duration: 0.1, ease: 'power2.out' })
+        .to('.loader__word span', { y: -24, opacity: 0, duration: 0.28, stagger: 0.02, ease: 'power2.in' }, '+=0.04')
+        .to('.loader__bar, .loader__pct, .loader__hint', { opacity: 0, y: 16, duration: 0.28 }, '<')
+        .to('.loader__face', { scale: 1.2, duration: 0.32, ease: 'back.in(2)' }, '<0.05')
+        .to(loader, { clipPath: 'circle(0% at 50% 42%)', duration: 0.7, ease: 'power2.inOut' }, '-=0.05')
+        .call(heroIntro, undefined, '-=0.45');
+    };
+
+    const started = performance.now();
+    const tick = () => {
+      const timed = Math.min(1, (performance.now() - started) / 2200);
+      progress.target = Math.max(progress.target, timed);
+      progress.shown += (Math.min(1, progress.target) - progress.shown) * 0.12;
+      if (progress.target >= 0.999 && progress.shown > 0.97) progress.shown = 1;
+      if (pctEl) pctEl.textContent = String(Math.round(progress.shown * 100));
+      if (barFill) barFill.style.strokeDashoffset = String(1 - progress.shown);
+      if (progress.shown >= 1) {
+        gsap.ticker.remove(tick);
+        finishLoader();
+      }
+    };
+    gsap.ticker.add(tick);
+    cleanups.push(() => gsap.ticker.remove(tick));
+
+    const title = '.exact-hero-title, .alternate-hero-title';
+    gsap.set(title, { y: 50, scale: 0.86, opacity: 0, transformOrigin: '20% 80%' });
+    gsap.set('#mascot', { scale: 0.55, rotation: -16, opacity: 0, transformOrigin: '50% 90%' });
+    gsap.set('.hero-subtitle, .contract-box, .stats-section', { y: 28, opacity: 0 });
+    gsap.set('.left-doodle', { rotation: -12, scale: 0, opacity: 0 });
+    gsap.set('.right-doodle', { rotation: -11, scale: 0, opacity: 0 });
+    gsap.set('.hero-crown', { rotation: 8, scale: 0, opacity: 0 });
+    gsap.set('.hero-star', { scale: 0, opacity: 0 });
+
+    function heroIntro() {
+      const tl = gsap.timeline();
+      tl.to(title, { y: 0, scale: 1, opacity: 1, duration: 1.05, ease: 'elastic.out(1, 0.55)' })
+        .to('#mascot', { scale: 1, rotation: 0, opacity: 1, duration: 1.15, ease: 'elastic.out(1, 0.5)' }, 0.08)
+        .to('.hero-subtitle, .contract-box', { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', stagger: 0.08 }, 0.35)
+        .to('.left-doodle, .right-doodle, .hero-crown, .hero-star', { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(2.6)', stagger: 0.08 }, 0.45)
+        .to('.stats-section', { y: 0, opacity: 1, duration: 0.7, ease: 'back.out(1.6)' }, 0.6)
+        .add(heroIdle, 0.9);
+    }
+
+    function heroIdle() {
+      gsap.to('.mascot-img', { y: -12, rotation: 1.4, duration: 2.1, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      gsap.to('.left-doodle', { y: -8, rotation: -16, duration: 1.8, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      gsap.to('.right-doodle', { y: -10, rotation: -6, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      gsap.to('.hero-crown', { rotation: 16, duration: 1.7, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      gsap.to('.hero-star', { rotation: 360, duration: 12, ease: 'none', repeat: -1 });
+      gsap.to(title, { y: -6, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    }
+
+    gsap.to(title, {
+      yPercent: -16, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+    });
+    gsap.to('#mascot-parallax', {
+      yPercent: 10, rotation: 3, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+    });
+
+    const mascot = $('#mascot');
+    if (mascot) {
+      gsap.set(mascot, { transformPerspective: 900 });
+      const mx = gsap.quickTo(mascot, 'x', { duration: 0.7, ease: 'power3' });
+      const my = gsap.quickTo(mascot, 'y', { duration: 0.7, ease: 'power3' });
+      const mr = gsap.quickTo(mascot, 'rotationY', { duration: 0.7, ease: 'power3' });
+      const onPointer = (event: PointerEvent) => {
+        const nx = event.clientX / window.innerWidth - 0.5;
+        const ny = event.clientY / window.innerHeight - 0.5;
+        mx(nx * 26);
+        my(ny * 18);
+        mr(nx * 10);
+      };
+      window.addEventListener('pointermove', onPointer, { passive: true });
+      cleanups.push(() => window.removeEventListener('pointermove', onPointer));
+      const poke = () => {
+        gsap.timeline()
+          .to(mascot, { scaleX: 1.12, scaleY: 0.88, duration: 0.1, ease: 'power2.out' })
+          .to(mascot, { scaleX: 0.94, scaleY: 1.08, duration: 0.12 })
+          .to(mascot, { scaleX: 1, scaleY: 1, duration: 0.7, ease: 'elastic.out(1, 0.35)' });
+        flashToast(pick(POKES));
+      };
+      mascot.addEventListener('click', poke);
+      cleanups.push(() => mascot.removeEventListener('click', poke));
+    }
+
+    const marquee = $('#marquee');
+    if (marquee) {
+      const loop = gsap.to(marquee, { xPercent: -50, duration: 22, ease: 'none', repeat: -1 });
+      let direction = 1;
+      ScrollTrigger.create({
+        onUpdate(self) {
+          const velocity = self.getVelocity();
+          if (Math.abs(velocity) > 5) direction = velocity > 0 ? 1 : -1;
+          gsap.to(loop, { timeScale: direction * (1 + Math.min(Math.abs(velocity) / 250, 6)), duration: 0.2, overwrite: true });
+          gsap.to(loop, { timeScale: direction, duration: 1.1, delay: 0.22, overwrite: false });
+        },
+      });
+      gsap.fromTo('.marquee', { rotate: -2.4 }, {
+        rotate: 0, ease: 'none',
+        scrollTrigger: { trigger: '.marquee', start: 'top bottom', end: 'bottom top', scrub: true },
+      });
+    }
+
+    gsap.utils.toArray<HTMLElement>('.story-ribbon, .buy-ribbon, .lower-title img').forEach((ribbon) => {
+      gsap.from(ribbon, {
+        y: 24, rotation: -6, opacity: 0, duration: 0.8, ease: 'back.out(1.8)',
+        scrollTrigger: { trigger: ribbon, start: 'top 88%', toggleActions: 'play none none reverse' },
+      });
+    });
+
+    gsap.set('.tilt, .road-cols > div, .token-table, .footer', { opacity: 0 });
+    ScrollTrigger.batch('.tilt, .road-cols > div, .token-table, .footer', {
+      start: 'top 90%',
+      onEnter: (batch) => gsap.fromTo(batch,
+        { y: 64, opacity: 0, rotation: () => rand(-6, 6) },
+        { y: 0, opacity: 1, rotation: 0, duration: 0.8, ease: 'back.out(1.5)', stagger: 0.07, overwrite: true }),
+      onLeaveBack: (batch) => gsap.set(batch, { opacity: 0, y: 40 }),
+    });
+
+    if (finePointer) {
+      $$('.tilt').forEach((card) => {
+        gsap.set(card, { transformPerspective: 800 });
+        const rx = gsap.quickTo(card, 'rotationX', { duration: 0.45, ease: 'power3' });
+        const ry = gsap.quickTo(card, 'rotationY', { duration: 0.45, ease: 'power3' });
+        const move = (event: Event) => {
+          const pointer = event as PointerEvent;
+          const rect = card.getBoundingClientRect();
+          ry(((pointer.clientX - rect.left) / rect.width - 0.5) * 12);
+          rx(-((pointer.clientY - rect.top) / rect.height - 0.5) * 12);
+        };
+        const leave = () => { rx(0); ry(0); };
+        card.addEventListener('pointermove', move);
+        card.addEventListener('pointerleave', leave);
+        cleanups.push(() => {
+          card.removeEventListener('pointermove', move);
+          card.removeEventListener('pointerleave', leave);
+        });
+      });
+
+      document.documentElement.classList.add('has-cursor');
+      const cursor = $('#cursor');
+      const dot = $('.cursor__dot');
+      const ring = $('.cursor__ring');
+      const label = $('.cursor__label');
+      if (cursor && dot && ring && label) {
+        const dx = gsap.quickTo(dot, 'x', { duration: 0.08, ease: 'power3' });
+        const dy = gsap.quickTo(dot, 'y', { duration: 0.08, ease: 'power3' });
+        const rx = gsap.quickTo(ring, 'x', { duration: 0.4, ease: 'power3' });
+        const ry = gsap.quickTo(ring, 'y', { duration: 0.4, ease: 'power3' });
+        const canvas = $('#ink') as HTMLCanvasElement | null;
+        const ink = canvas?.getContext('2d') ?? null;
+        let dpr = 1;
+        const resize = () => {
+          if (!canvas) return;
+          dpr = Math.min(2, window.devicePixelRatio || 1);
+          canvas.width = window.innerWidth * dpr;
+          canvas.height = window.innerHeight * dpr;
+        };
+        resize();
+        window.addEventListener('resize', resize);
+        cleanups.push(() => window.removeEventListener('resize', resize));
+        const pts: Array<{ x: number; y: number; t: number }> = [];
+        const move = (event: PointerEvent) => {
+          dx(event.clientX); dy(event.clientY); rx(event.clientX); ry(event.clientY);
+          pts.push({ x: event.clientX, y: event.clientY, t: performance.now() });
+          cursor.classList.remove('is-hidden');
+        };
+        window.addEventListener('pointermove', move, { passive: true });
+        const leave = () => cursor.classList.add('is-hidden');
+        const down = () => cursor.classList.add('is-down');
+        const up = () => cursor.classList.remove('is-down');
+        document.addEventListener('pointerleave', leave);
+        window.addEventListener('pointerdown', down);
+        window.addEventListener('pointerup', up);
+        cleanups.push(() => {
+          window.removeEventListener('pointermove', move);
+          document.removeEventListener('pointerleave', leave);
+          window.removeEventListener('pointerdown', down);
+          window.removeEventListener('pointerup', up);
+        });
+        const inkTick = () => {
+          if (!ink || !canvas) return;
+          const now = performance.now();
+          while (pts.length && now - pts[0].t > 420) pts.shift();
+          ink.setTransform(1, 0, 0, 1, 0, 0);
+          ink.clearRect(0, 0, canvas.width, canvas.height);
+          if (pts.length < 2) return;
+          ink.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ink.lineCap = 'round';
+          ink.lineJoin = 'round';
+          ink.strokeStyle = '#000';
+          for (let i = 1; i < pts.length; i += 1) {
+            const a = pts[i - 1];
+            const b = pts[i];
+            const life = 1 - (now - b.t) / 420;
+            ink.globalAlpha = Math.max(0, life);
+            ink.lineWidth = 1 + life * 6;
+            const jitter = (1 - life) * 1.4;
+            ink.beginPath();
+            ink.moveTo(a.x + rand(-jitter, jitter), a.y + rand(-jitter, jitter));
+            ink.lineTo(b.x + rand(-jitter, jitter), b.y + rand(-jitter, jitter));
+            ink.stroke();
+          }
+          ink.globalAlpha = 1;
+        };
+        gsap.ticker.add(inkTick);
+        cleanups.push(() => gsap.ticker.remove(inkTick));
+
+        const labelFor = (el: Element) => {
+          if (el.id === 'mascot') return 'poke';
+          if (el.matches('[data-soon]')) return 'soon';
+          if (el.matches('.contract-box button')) return 'copy!';
+          if (el.matches('a[href^="http"]')) return 'open';
+          if (el.matches('a[href^="#"]')) return 'go';
+          return 'troll!';
+        };
+        const over = (event: Event) => {
+          const el = (event.target as HTMLElement | null)?.closest('a, button, #mascot');
+          if (!el) return;
+          label.textContent = labelFor(el);
+          cursor.classList.add('is-hover');
+        };
+        const out = (event: Event) => {
+          const pointer = event as PointerEvent;
+          const el = (event.target as HTMLElement | null)?.closest('a, button, #mascot');
+          if (el && !el.contains(pointer.relatedTarget as Node | null)) cursor.classList.remove('is-hover');
+        };
+        document.addEventListener('pointerover', over);
+        document.addEventListener('pointerout', out);
+        cleanups.push(() => {
+          document.removeEventListener('pointerover', over);
+          document.removeEventListener('pointerout', out);
+          document.documentElement.classList.remove('has-cursor');
+        });
+      }
+    }
+
+    const fx = $('#fx');
+    const svgNs = 'http://www.w3.org/2000/svg';
+    const burst = (event: PointerEvent) => {
+      if (!fx || event.button > 0) return;
+      const x = event.clientX;
+      const y = event.clientY;
+      const svg = document.createElementNS(svgNs, 'svg');
+      svg.setAttribute('viewBox', '-60 -60 120 120');
+      svg.setAttribute('class', 'fx__burst');
+      svg.style.left = `${x}px`;
+      svg.style.top = `${y}px`;
+      const lines: SVGPathElement[] = [];
+      const offset = rand(0, Math.PI);
+      for (let i = 0; i < 8; i += 1) {
+        const angle = offset + (i / 8) * Math.PI * 2 + rand(-0.15, 0.15);
+        const inner = rand(12, 18);
+        const outer = rand(28, 44);
+        const path = document.createElementNS(svgNs, 'path');
+        path.setAttribute('d', `M${Math.cos(angle) * inner} ${Math.sin(angle) * inner}L${Math.cos(angle) * outer} ${Math.sin(angle) * outer}`);
+        path.setAttribute('pathLength', '1');
+        path.style.strokeDasharray = '1 1';
+        path.style.strokeDashoffset = '1';
+        svg.appendChild(path);
+        lines.push(path);
+      }
+      fx.appendChild(svg);
+      const ring = document.createElement('div');
+      ring.className = 'fx__ring';
+      ring.style.left = `${x}px`;
+      ring.style.top = `${y}px`;
+      fx.appendChild(ring);
+      gsap.timeline({ onComplete: () => { svg.remove(); ring.remove(); } })
+        .to(lines, { strokeDashoffset: 0, duration: 0.16, ease: 'power2.out' })
+        .to(lines, { strokeDashoffset: -1, duration: 0.28, ease: 'power2.in' }, 0.18)
+        .fromTo(ring, { scale: 0.2, opacity: 1 }, { scale: 3.2, opacity: 0, rotate: 80, duration: 0.5, ease: 'power2.out' }, 0);
+      if (Math.random() < 0.55) {
+        const word = document.createElement('div');
+        word.className = 'fx__word';
+        word.textContent = pick(WORDS);
+        word.style.left = `${x}px`;
+        word.style.top = `${y}px`;
+        fx.appendChild(word);
+        gsap.timeline({ onComplete: () => word.remove() })
+          .fromTo(word, { xPercent: -50, yPercent: -50, scale: 0, rotate: rand(-24, 24) },
+            { scale: 1, y: -54, x: rand(-36, 36), rotate: rand(-12, 12), duration: 0.45, ease: 'back.out(2.6)' })
+          .to(word, { y: -100, opacity: 0, duration: 0.4, ease: 'power2.in' }, '+=0.15');
+      }
+    };
+    window.addEventListener('pointerdown', burst);
+    cleanups.push(() => window.removeEventListener('pointerdown', burst));
+  });
+
+  return () => {
+    cleanups.forEach((fn) => fn());
+    ctx.revert();
+    document.body.classList.remove('is-loading');
+    document.documentElement.classList.remove('has-cursor');
+  };
+}

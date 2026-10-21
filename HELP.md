@@ -45,3 +45,9 @@ Pushing the `main` branch publishes the static site. After the **Publish GitHub 
 ## 11. Known limits
 
 The exported reference exact-card images contain baked text; only other text and token fields are editable. Market holders are blank. Live numbers appear only after a real Ethereum contract is configured and DexScreener has indexed an Ethereum pair. The browser must be allowed to call `api.dexscreener.com`.
+
+## 12. Motion
+
+The page uses the same motion language as a hand-drawn launch site: a draw-on loader, smooth scrolling, a velocity-sensitive marquee, scroll-in cards, pointer tilt, a following ink cursor on desktop, click bursts, and a small toast when a launch link is still closed. The header sticks and tucks away while you scroll down. The mascot eases in, floats, leans toward the pointer, and squishes when clicked.
+
+`prefers-reduced-motion` is not used to switch the show off, because some Windows setups report that whenever animation effects are disabled and it would hide the whole motion design. Add `?reduce=1` to turn motion off. Open `/?compare=1` to freeze motion for a still comparison with the reference drawing.
