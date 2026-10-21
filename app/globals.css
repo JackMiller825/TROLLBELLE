@@ -239,9 +239,6 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   width: 100%;
   transform-origin: 50% 55%;
   will-change: transform;
-  background: #000;
-  border-radius: 42% 48% 44% 46%;
-  overflow: hidden;
   line-height: 0;
 }
 .troll-mouth__img,
@@ -906,9 +903,6 @@ html.lenis, html.lenis body { height: auto; }
 .loader__mouth-pivot {
   transform-origin: 50% 55%;
   will-change: transform;
-  background: #000;
-  border-radius: 42% 48% 44% 46%;
-  overflow: hidden;
   line-height: 0;
 }
 .loader__word { display: flex; flex-wrap: nowrap; font-family: 'Permanent Marker', cursive; font-size: clamp(42px, 8vw, 72px); line-height: 1; letter-spacing: -0.02em; }
