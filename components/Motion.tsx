@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import { onToast } from '@/lib/toast';
 
 const WORDS = ['troll!', 'problem?', 'grin!', 'boop', '♪', 'chaos!', 'hey!'];
-const POKES = ['problem, darling?', 'hey! that tickles', 'good trolls only', 'troll!'];
 
 function pick<T>(arr: T[]) {
   return arr[(Math.random() * arr.length) | 0];
@@ -380,15 +379,6 @@ function mountMotion(
       };
       window.addEventListener('pointermove', onPointer, { passive: true });
       cleanups.push(() => window.removeEventListener('pointermove', onPointer));
-      const poke = () => {
-        gsap.timeline()
-          .to(mascot, { scaleX: 1.12, scaleY: 0.88, duration: 0.1, ease: 'power2.out' })
-          .to(mascot, { scaleX: 0.94, scaleY: 1.08, duration: 0.12 })
-          .to(mascot, { scaleX: 1, scaleY: 1, duration: 0.7, ease: 'elastic.out(1, 0.35)' });
-        flashToast(pick(POKES));
-      };
-      mascot.addEventListener('click', poke);
-      cleanups.push(() => mascot.removeEventListener('click', poke));
     }
 
     const marquee = $('#marquee');
@@ -619,7 +609,6 @@ function mountMotion(
         cleanups.push(() => gsap.ticker.remove(inkTick));
 
         const labelFor = (el: Element) => {
-          if (el.id === 'mascot') return 'poke';
           if (el.matches('[data-soon]')) return 'soon';
           if (el.matches('.contract-box button')) return 'copy!';
           if (el.matches('a[href^="http"]')) return 'open';
@@ -627,14 +616,14 @@ function mountMotion(
           return 'troll!';
         };
         const over = (event: Event) => {
-          const el = (event.target as HTMLElement | null)?.closest('a, button, #mascot');
+          const el = (event.target as HTMLElement | null)?.closest('a, button');
           if (!el) return;
           label.textContent = labelFor(el);
           cursor.classList.add('is-hover');
         };
         const out = (event: Event) => {
           const pointer = event as PointerEvent;
-          const el = (event.target as HTMLElement | null)?.closest('a, button, #mascot');
+          const el = (event.target as HTMLElement | null)?.closest('a, button');
           if (el && !el.contains(pointer.relatedTarget as Node | null)) cursor.classList.remove('is-hover');
         };
         document.addEventListener('pointerover', over);

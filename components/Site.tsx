@@ -52,8 +52,28 @@ const phases: Array<{ name: string; items: Array<{ text: string; done?: boolean 
   },
 ];
 
-function IconArt({ file, alt = '', className = '' }: { file: string; alt?: string; className?: string }) {
-  return <Image unoptimized className={className} src={P + file} alt={alt} width={900} height={900} />;
+function IconArt({
+  file,
+  alt = '',
+  className = '',
+  draggable = false,
+}: {
+  file: string;
+  alt?: string;
+  className?: string;
+  draggable?: boolean;
+}) {
+  return (
+    <Image
+      unoptimized
+      draggable={draggable}
+      className={className}
+      src={P + file}
+      alt={alt}
+      width={900}
+      height={900}
+    />
+  );
 }
 
 function FramedArt({
@@ -231,7 +251,7 @@ function Hero() {
   }, []);
 
   return (
-    <section className="screen hero" id="hero" aria-labelledby="hero-heading">
+    <section className="hero" id="hero" aria-labelledby="hero-heading">
       <div className="hero__copy">
         <div className="hero__hello">
           <div className="eyes" aria-hidden="true"><span /><span /></div>
@@ -280,9 +300,13 @@ function Hero() {
       </div>
       <div className="hero__art">
         <div className="left-doodle" aria-hidden="true">same<br />internet<br />different<br />problems<br /><b>☺</b></div>
-        <div className="hero-character" id="mascot-parallax">
-          <div className="mascot-pivot" id="mascot" data-cursor="poke">
-            <IconArt className="mascot-img" file="trollbelle-hero-transparent.png" alt="Trollbelle with her famous grin, twin ponytails, spray paint and huge boots" />
+        <div className="hero__mascot" id="mascot-parallax">
+          <div className="mascot-pivot" id="mascot">
+            <IconArt
+              className="mascot-img"
+              file="trollbelle-hero-transparent.png"
+              alt="Trollbelle with her famous grin, twin ponytails, spray paint and huge boots"
+            />
           </div>
         </div>
         <div className="sticker sticker--light right-doodle" aria-hidden="true">100%<br />troll</div>
@@ -326,8 +350,8 @@ function Stats() {
   ];
 
   return (
-    <section className="screen stats" id="stats" aria-labelledby="stats-heading">
-      <div className="stats__head">
+    <section className="section stats" id="stats" aria-labelledby="stats-heading">
+      <div className="section__head stats__head">
         <h2 className="section__title" id="stats-heading" aria-label="live troll-stats"><Chars text="live troll-stats" /></h2>
         <span className={`pill${live ? ' is-live' : ''}`}><i />{pill}</span>
       </div>
@@ -425,9 +449,13 @@ function Story() {
 
 function Buy() {
   return (
-    <section className="screen buy" id="buy" aria-labelledby="buy-heading">
-      <h2 className="section__title" id="buy-heading" aria-label="how to buy"><Chars text="how to buy" /></h2>
-      <p className="section__kicker">it&apos;s simple. stop overthinking.</p>
+    <section className="section buy" id="buy" aria-labelledby="buy-heading">
+      <div className="section__head">
+        <div>
+          <h2 className="section__title" id="buy-heading" aria-label="how to buy"><Chars text="how to buy" /></h2>
+          <p className="section__kicker">it&apos;s simple. stop overthinking.</p>
+        </div>
+      </div>
       <div className="steps">
         {buySteps.map((step, i) => (
           <article className="step card tilt" key={step.title}>
