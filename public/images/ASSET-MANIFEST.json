@@ -428,6 +428,87 @@
       ],
       "kind": "production-art",
       "size_bytes": 27281
+    },
+    {
+      "file": "who-1.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "kind": "original-doodle",
+      "size_bytes": 1167190
+    },
+    {
+      "file": "who-2.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "kind": "original-doodle",
+      "size_bytes": 1461105
+    },
+    {
+      "file": "who-3.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "kind": "original-doodle",
+      "size_bytes": 1345109
+    },
+    {
+      "file": "who-4.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "kind": "original-doodle",
+      "size_bytes": 1564006
+    },
+    {
+      "file": "who-5.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "kind": "original-doodle",
+      "size_bytes": 1192767
+    },
+    {
+      "file": "buy-1.png",
+      "size": [
+        1122,
+        1402
+      ],
+      "kind": "original-doodle",
+      "size_bytes": 1172678
+    },
+    {
+      "file": "buy-2.png",
+      "size": [
+        1122,
+        1402
+      ],
+      "kind": "original-doodle",
+      "size_bytes": 1223735
+    },
+    {
+      "file": "buy-3.png",
+      "size": [
+        1122,
+        1402
+      ],
+      "kind": "original-doodle",
+      "size_bytes": 1260986
+    },
+    {
+      "file": "buy-4.png",
+      "size": [
+        1122,
+        1402
+      ],
+      "kind": "original-doodle",
+      "size_bytes": 1212482
     }
   ]
 }

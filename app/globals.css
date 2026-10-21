@@ -419,28 +419,46 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
 }
 .story-title .line { display: block; white-space: nowrap; overflow: hidden; padding-bottom: 0.12em; }
 .panel--intro p { margin: 20px 0 0; font-size: clamp(20px, 2.4vh, 24px); font-weight: 400; max-width: 26ch; line-height: 1.25; }
+.card {
+  position: relative;
+  background: #fff;
+  border: 4px solid #000;
+  border-radius: var(--wob-1);
+  box-shadow: var(--shadow-stat);
+  padding: clamp(16px, 2vh, 26px);
+}
+.panel.card:nth-child(3n + 2) { border-radius: var(--wob-2); }
+.panel.card:nth-child(3n + 3) { border-radius: var(--wob-3); }
+.step.card:nth-child(3n + 2) { border-radius: var(--wob-2); }
+.step.card:nth-child(3n + 3) { border-radius: var(--wob-3); }
+.card__img {
+  overflow: hidden;
+  border: 3px solid #000;
+  border-radius: var(--wob-3);
+  line-height: 0;
+  background: #fff;
+}
+.card__img img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center top;
+}
 .panel--card {
   width: clamp(300px, 30vw, 420px);
   transform-origin: 50% 50%;
 }
-.story__track > .panel--card:nth-child(2n) { transform: rotate(-1.5deg); }
-.story__track > .panel--card:nth-child(2n + 1) { transform: rotate(1.5deg); }
-.panel__photo {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: min(78vh, 640px);
-  object-fit: contain;
-  object-position: center top;
-}
+.story__track > .panel.card:nth-child(2n) { transform: rotate(-1.5deg); }
+.story__track > .panel.card:nth-child(2n + 1) { transform: rotate(1.5deg); }
+.story .card__img img { max-height: min(62vh, 560px); }
 .story.is-static .panel--card { scroll-snap-align: center; }
 
 .buy { gap: 8px; }
-.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: start; margin-top: 12px; }
-.step:nth-child(2) { margin-top: 5vh; }
-.step:nth-child(3) { margin-top: 1vh; }
-.step:nth-child(4) { margin-top: 7vh; }
-.step img { display: block; width: 100%; height: auto; max-height: 42vh; object-fit: contain; }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(18px, 2.4vw, 30px); align-items: start; margin-top: 12px; }
+.step.card:nth-child(2n) { margin-top: clamp(28px, 5vh, 50px); }
+.step.card:nth-child(2n + 1) { margin-top: 0; }
+.buy .card__img img { max-height: min(46vh, 500px); }
 .buy-arrow { width: 100%; height: 54px; margin: 4px auto 0; display: block; }
 .buy-arrow path { fill: none; stroke: #000; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
 .buy-note a { text-decoration: underline; }
@@ -584,6 +602,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   .steps { grid-template-columns: 1fr 1fr; }
   .step:nth-child(n) { margin-top: 0; }
   .panel--card { width: clamp(260px, 72vw, 380px); }
+  .step.card:nth-child(2n) { margin-top: 0; }
   .panel--intro { width: min(78vw, 340px); }
 }
 
@@ -620,8 +639,8 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
     gap: 12px;
     padding-bottom: 8px;
   }
-  .step { flex: 0 0 min(78vw, 320px); scroll-snap-align: center; }
-  .step img { max-height: 46vh; }
+  .step.card { flex: 0 0 min(78vw, 320px); scroll-snap-align: center; }
+  .buy .card__img img { max-height: 52vh; }
   .screen.buy { height: 100svh; overflow: hidden; }
   .hero-subtitle br { display: none; }
   .story-title { font-size: clamp(34px, 10vw, 48px); }
@@ -635,9 +654,7 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   .stats .section__title { font-size: clamp(48px, 7vh, 80px); }
   .section__title { font-size: clamp(42px, 5vw, 68px); }
   .hero__art { height: min(68vh, 520px); min-height: 300px; }
-  .step img { max-height: 34vh; }
-  .step:nth-child(2) { margin-top: 2vh; }
-  .step:nth-child(4) { margin-top: 3vh; }
+  .buy .card__img img { max-height: 34vh; }
 }
 
 .boil { filter: url(#boil); }
@@ -709,4 +726,4 @@ html.lenis, html.lenis body { height: auto; }
 html.reduce *, html.reduce *::before, html.reduce *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 html.reduce .loader { display: none !important; }
 html.reduce body.is-loading { overflow: auto; height: auto; }
-html.reduce .boil, html.reduce .loader__face { filter: none; }
+html.reduce .boil, html.reduce .loader__face, html.reduce .card__img img { filter: none; }

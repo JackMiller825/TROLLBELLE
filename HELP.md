@@ -18,11 +18,11 @@ The stats scene is its own screen. Markets are fetched in the browser from the D
 
 ## 5. Story
 
-“Who is trollbelle?” fills one screen. On desktop the scene pins and the five doodle cards (`ref-story-card-01.png` ... `05.png`) slide sideways as you scroll. On a phone, swipe the row. The handwritten captions are part of the images; text equivalents are in `components/Site.tsx`.
+“Who is trollbelle?” fills one screen. On desktop the scene pins and five framed doodles (`who-1.png` … `who-5.png`) slide sideways inside hand-drawn cards as you scroll. On a phone, swipe the row. Captions are on the art; text equivalents live in `components/Site.tsx`.
 
 ## 6. Buying guide
 
-One screen: a large title, four illustrated Ethereum cards (`ref-buy-card-01.png` ... `04.png`), and a line that draws on as the scene arrives. The cards stay MetaMask/Rabby, ETH, Uniswap, and hold & troll. A visible line tells people to write the recovery phrase on paper. The Uniswap button only leaves the site after a real contract is set; until then it scrolls to this scene.
+One screen: a large title, four framed Ethereum doodles (`buy-1.png` … `buy-4.png`), and a line that draws on as the scene arrives. Steps stay MetaMask/Rabby, ETH, Uniswap, and hold & troll. A visible line tells people to write the recovery phrase on paper. The Uniswap button only leaves the site after a real contract is set; until then it scrolls to this scene.
 
 ## 7. Troll-nomics & Troll-map
 

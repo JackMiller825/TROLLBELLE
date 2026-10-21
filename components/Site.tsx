@@ -19,10 +19,10 @@ const story = [
 ];
 
 const buySteps = [
-  { title: 'get a wallet', text: 'Download MetaMask or Rabby wallet from the official provider.', file: 'ref-buy-card-01.png' },
-  { title: 'get some ETH', text: 'Buy ETH on an exchange and send it to your Ethereum wallet. Keep ETH for network gas.', file: 'ref-buy-card-02.png' },
-  { title: 'swap on Uniswap', text: 'Open official Uniswap, select Ethereum and verify the exact contract address before swapping.', file: 'ref-buy-card-03.png' },
-  { title: 'hold & troll', text: 'Make memes and enjoy the community. Memecoins can lose all their value.', file: 'ref-buy-card-04.png' },
+  { title: 'get a wallet', text: 'Download MetaMask or Rabby wallet from the official provider.', file: 'buy-1.png', w: 1122, h: 1402 },
+  { title: 'get some ETH', text: 'Buy ETH on an exchange and send it to your Ethereum wallet. Keep ETH for network gas.', file: 'buy-2.png', w: 1122, h: 1402 },
+  { title: 'swap on Uniswap', text: 'Open official Uniswap, select Ethereum and verify the exact contract address before swapping.', file: 'buy-3.png', w: 1122, h: 1402 },
+  { title: 'hold & troll', text: 'Make memes and enjoy the community. Memecoins can lose all their value.', file: 'buy-4.png', w: 1122, h: 1402 },
 ];
 
 const phases: Array<{ name: string; items: Array<{ text: string; done?: boolean }> }> = [
@@ -54,6 +54,26 @@ const phases: Array<{ name: string; items: Array<{ text: string; done?: boolean 
 
 function IconArt({ file, alt = '', className = '' }: { file: string; alt?: string; className?: string }) {
   return <Image unoptimized className={className} src={P + file} alt={alt} width={900} height={900} />;
+}
+
+function FramedArt({
+  file,
+  alt,
+  width,
+  height,
+  sizes = '(min-width: 861px) 28vw, 75vw',
+}: {
+  file: string;
+  alt: string;
+  width: number;
+  height: number;
+  sizes?: string;
+}) {
+  return (
+    <div className="card__img">
+      <Image unoptimized className="boil" src={P + file} alt={alt} width={width} height={height} sizes={sizes} />
+    </div>
+  );
 }
 
 function Chars({ text }: { text: string }) {
@@ -386,17 +406,15 @@ function Story() {
             <p>a short documentary in five doodles.<br />keep scrolling →</p>
           </article>
           {story.map((item, i) => (
-            <article className="panel panel--card tilt" key={item.title}>
-              <Image
-                unoptimized
-                className="panel__photo"
-                src={`${P}ref-story-card-${String(i + 1).padStart(2, '0')}.png`}
+            <article className="panel panel--card card tilt" key={item.title}>
+              <FramedArt
+                file={`who-${i + 1}.png`}
                 alt={`${String(i + 1).padStart(2, '0')} — ${item.text}`}
-                width={582}
-                height={756}
-                sizes="(min-width: 861px) 30vw, 72vw"
+                width={1024}
+                height={1536}
               />
-              <div className="sr-only"><h3>{item.title}</h3><p>{item.text}</p></div>
+              <h3 className="sr-only">{item.title}</h3>
+              <p className="sr-only">{item.text}</p>
             </article>
           ))}
         </div>
@@ -412,14 +430,15 @@ function Buy() {
       <p className="section__kicker">it&apos;s simple. stop overthinking.</p>
       <div className="steps">
         {buySteps.map((step, i) => (
-          <article className="step tilt" key={step.title}>
-            <Image
-              unoptimized
-              src={`${P}${step.file}`}
+          <article className="step card tilt" key={step.title}>
+            <FramedArt
+              file={step.file}
               alt={`${i + 1} ${step.title}. ${step.text}`}
-              width={660}
-              height={560}
+              width={step.w}
+              height={step.h}
             />
+            <h3 className="sr-only">{step.title}</h3>
+            <p className="sr-only">{step.text}</p>
           </article>
         ))}
       </div>

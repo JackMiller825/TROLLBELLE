@@ -8,8 +8,9 @@ All assets are in `/public/images` and in `../all-assets`. The assets archive ha
 - `ref-header-crown.png`: header brand crown
 - `ref-live-stats-title.png`: hand-lettered live stats ribbon
 - `ref-story-title.png`, `ref-buy-title.png`, `ref-tokenomics-title.png`, `ref-roadmap-title.png`: exact section headings
-- `ref-story-card-01.png` through `ref-story-card-05.png`: five standalone original-design illustrated story cards (including on-image handwritten text)
-- `ref-buy-card-01.png` through `ref-buy-card-04.png`: four standalone original-design illustrated Ethereum buying cards (including on-image handwritten text)
+- `who-1.png` through `who-5.png`: borderless story doodles (shown inside CSS hand-drawn card frames on the site)
+- `buy-1.png` through `buy-4.png`: borderless how-to-buy doodles (same framed card treatment)
+- `ref-story-card-01.png` … `05.png` and `ref-buy-card-01.png` … `04.png`: legacy full polaroid exports (kept in the folder; the live site uses the `who-*` / `buy-*` set)
 - `ref-graffiti-crown.png`, `ref-graffiti-star.png`, `ref-graffiti-heart.png`, `ref-footer-heart.png`: black/transparent hand doodles
 
 ## High-resolution supplemental assets (27)
