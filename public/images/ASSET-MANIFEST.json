@@ -1,0 +1,433 @@
+{
+  "edition": "Screenshot-faithful V2",
+  "reference_resolution": [
+    1055,
+    1491
+  ],
+  "monochrome": "All asset RGB channels are either pure black or pure white, with alpha transparency where appropriate",
+  "assets": [
+    {
+      "file": "ref-buy-card-01.png",
+      "size": [
+        657,
+        648
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 6006
+    },
+    {
+      "file": "ref-buy-card-02.png",
+      "size": [
+        747,
+        645
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 6724
+    },
+    {
+      "file": "ref-buy-card-03.png",
+      "size": [
+        756,
+        651
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 7104
+    },
+    {
+      "file": "ref-buy-card-04.png",
+      "size": [
+        720,
+        651
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 6548
+    },
+    {
+      "file": "ref-buy-title.png",
+      "size": [
+        1056,
+        219
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 72813
+    },
+    {
+      "file": "ref-footer-heart.png",
+      "size": [
+        129,
+        117
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 11633
+    },
+    {
+      "file": "ref-graffiti-crown.png",
+      "size": [
+        258,
+        288
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 31768
+    },
+    {
+      "file": "ref-graffiti-heart.png",
+      "size": [
+        168,
+        138
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 10206
+    },
+    {
+      "file": "ref-graffiti-star.png",
+      "size": [
+        201,
+        210
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 5144
+    },
+    {
+      "file": "ref-header-crown.png",
+      "size": [
+        232,
+        184
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 16804
+    },
+    {
+      "file": "ref-hero-lettering.png",
+      "size": [
+        1290,
+        370
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 151665
+    },
+    {
+      "file": "ref-live-stats-title.png",
+      "size": [
+        930,
+        168
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 46324
+    },
+    {
+      "file": "ref-roadmap-title.png",
+      "size": [
+        786,
+        201
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 54268
+    },
+    {
+      "file": "ref-story-card-01.png",
+      "size": [
+        582,
+        756
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 6571
+    },
+    {
+      "file": "ref-story-card-02.png",
+      "size": [
+        588,
+        762
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 8311
+    },
+    {
+      "file": "ref-story-card-03.png",
+      "size": [
+        561,
+        762
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 8101
+    },
+    {
+      "file": "ref-story-card-04.png",
+      "size": [
+        567,
+        759
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 8504
+    },
+    {
+      "file": "ref-story-card-05.png",
+      "size": [
+        612,
+        762
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 7512
+    },
+    {
+      "file": "ref-story-title.png",
+      "size": [
+        777,
+        219
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 50407
+    },
+    {
+      "file": "ref-tokenomics-title.png",
+      "size": [
+        933,
+        204
+      ],
+      "kind": "reference-extracted",
+      "size_bytes": 68633
+    },
+    {
+      "file": "trollbelle-banner-1500x500.png",
+      "size": [
+        1500,
+        500
+      ],
+      "kind": "production-art",
+      "size_bytes": 20578
+    },
+    {
+      "file": "trollbelle-buy-01-wallet.png",
+      "size": [
+        444,
+        887
+      ],
+      "kind": "production-art",
+      "size_bytes": 22593
+    },
+    {
+      "file": "trollbelle-buy-02-eth.png",
+      "size": [
+        443,
+        887
+      ],
+      "kind": "production-art",
+      "size_bytes": 21913
+    },
+    {
+      "file": "trollbelle-buy-03-uniswap.png",
+      "size": [
+        443,
+        887
+      ],
+      "kind": "production-art",
+      "size_bytes": 18426
+    },
+    {
+      "file": "trollbelle-buy-04-join.png",
+      "size": [
+        444,
+        887
+      ],
+      "kind": "production-art",
+      "size_bytes": 25318
+    },
+    {
+      "file": "trollbelle-buy-full-strip.png",
+      "size": [
+        1774,
+        887
+      ],
+      "kind": "production-art",
+      "size_bytes": 85704
+    },
+    {
+      "file": "trollbelle-community-illustration.png",
+      "size": [
+        627,
+        627
+      ],
+      "kind": "production-art",
+      "size_bytes": 29578
+    },
+    {
+      "file": "trollbelle-doodle-arrow.png",
+      "size": [
+        320,
+        320
+      ],
+      "kind": "production-art",
+      "size_bytes": 1205
+    },
+    {
+      "file": "trollbelle-doodle-crown.png",
+      "size": [
+        320,
+        320
+      ],
+      "kind": "production-art",
+      "size_bytes": 1712
+    },
+    {
+      "file": "trollbelle-doodle-smile.png",
+      "size": [
+        320,
+        320
+      ],
+      "kind": "production-art",
+      "size_bytes": 2016
+    },
+    {
+      "file": "trollbelle-doodle-spark.png",
+      "size": [
+        320,
+        320
+      ],
+      "kind": "production-art",
+      "size_bytes": 1743
+    },
+    {
+      "file": "trollbelle-doodle-speech.png",
+      "size": [
+        320,
+        320
+      ],
+      "kind": "production-art",
+      "size_bytes": 1467
+    },
+    {
+      "file": "trollbelle-doodle-star.png",
+      "size": [
+        320,
+        320
+      ],
+      "kind": "production-art",
+      "size_bytes": 2009
+    },
+    {
+      "file": "trollbelle-favicon.png",
+      "size": [
+        512,
+        512
+      ],
+      "kind": "production-art",
+      "size_bytes": 16227
+    },
+    {
+      "file": "trollbelle-footer-character.png",
+      "size": [
+        1122,
+        1402
+      ],
+      "kind": "production-art",
+      "size_bytes": 108208
+    },
+    {
+      "file": "trollbelle-hero-transparent.png",
+      "size": [
+        1086,
+        1448
+      ],
+      "kind": "production-art",
+      "size_bytes": 69267
+    },
+    {
+      "file": "trollbelle-loading-illustration.png",
+      "size": [
+        627,
+        627
+      ],
+      "kind": "production-art",
+      "size_bytes": 24437
+    },
+    {
+      "file": "trollbelle-logo-1024.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "kind": "production-art",
+      "size_bytes": 50436
+    },
+    {
+      "file": "trollbelle-roadmap-illustration.png",
+      "size": [
+        627,
+        627
+      ],
+      "kind": "production-art",
+      "size_bytes": 18512
+    },
+    {
+      "file": "trollbelle-story-01.png",
+      "size": [
+        397,
+        793
+      ],
+      "kind": "production-art",
+      "size_bytes": 22836
+    },
+    {
+      "file": "trollbelle-story-02.png",
+      "size": [
+        396,
+        793
+      ],
+      "kind": "production-art",
+      "size_bytes": 27047
+    },
+    {
+      "file": "trollbelle-story-03.png",
+      "size": [
+        397,
+        793
+      ],
+      "kind": "production-art",
+      "size_bytes": 25142
+    },
+    {
+      "file": "trollbelle-story-04.png",
+      "size": [
+        396,
+        793
+      ],
+      "kind": "production-art",
+      "size_bytes": 21084
+    },
+    {
+      "file": "trollbelle-story-05.png",
+      "size": [
+        397,
+        793
+      ],
+      "kind": "production-art",
+      "size_bytes": 29919
+    },
+    {
+      "file": "trollbelle-story-full-strip.png",
+      "size": [
+        1983,
+        793
+      ],
+      "kind": "production-art",
+      "size_bytes": 123556
+    },
+    {
+      "file": "trollbelle-telegram-1100x520.png",
+      "size": [
+        1100,
+        520
+      ],
+      "kind": "production-art",
+      "size_bytes": 17913
+    },
+    {
+      "file": "trollbelle-tokenomics-illustration.png",
+      "size": [
+        627,
+        627
+      ],
+      "kind": "production-art",
+      "size_bytes": 27281
+    }
+  ]
+}
