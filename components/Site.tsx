@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import { Check, Copy, Menu, X } from 'lucide-react';
 import { site, uniswapUrl, dexscreenerUrl } from '@/lib/site';
 import { fetchMarket, formatChange, formatDollar, formatPrice, type MarketSnapshot } from '@/lib/market';
@@ -63,6 +63,43 @@ function Chars({ text }: { text: string }) {
         <span className="ch" key={`${i}-${ch}`}>{ch === ' ' ? '\u00a0' : ch}</span>
       ))}
     </>
+  );
+}
+
+/** Slice widths (% of wordmark) for ref-hero-lettering.png — sum = 100 */
+const HERO_LETTER_WIDTHS = [11, 10, 12, 9, 9, 11, 10, 9, 9, 10];
+
+function HeroTitleLetters({ word, image }: { word: string; image?: boolean }) {
+  let offset = 0;
+  const letters = Array.from(word.toUpperCase());
+
+  return (
+    <span className="hero-title-line">
+      {letters.map((ch, i) => {
+        const w = image ? (HERO_LETTER_WIDTHS[i] ?? Math.round(100 / letters.length)) : undefined;
+        const sliceOffset = offset;
+        if (w) offset += w;
+        return (
+          <span
+            className="hero-title-letter ht-l"
+            key={`${i}-${ch}`}
+            style={
+              image && w
+                ? ({ '--w': w, '--offset': sliceOffset } as CSSProperties)
+                : undefined
+            }
+            aria-hidden={image ? true : undefined}
+          >
+            {image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className="hero-title-letter__img" src={`${P}ref-hero-lettering.png`} alt="" />
+            ) : (
+              ch
+            )}
+          </span>
+        );
+      })}
+    </span>
   );
 }
 
@@ -158,11 +195,13 @@ function Hero() {
         </div>
         {site.name.toLowerCase() === 'trollbelle' ? (
           <div className="exact-hero-title">
-            <IconArt file="ref-hero-lettering.png" alt="" />
+            <HeroTitleLetters word="TROLLBELLE" image />
             <h1 className="sr-only" id="hero-heading">TROLLBELLE</h1>
           </div>
         ) : (
-          <h1 id="hero-heading" className="alternate-hero-title">{site.name.toUpperCase()}</h1>
+          <h1 id="hero-heading" className="alternate-hero-title">
+            <HeroTitleLetters word={site.name} />
+          </h1>
         )}
         <svg className="underline" viewBox="0 0 420 18" aria-hidden="true">
           <path d="M4 11 C 70 2, 150 16, 220 8 S 340 16, 416 5" />

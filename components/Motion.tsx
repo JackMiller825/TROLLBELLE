@@ -294,8 +294,8 @@ function mountMotion(
     gsap.ticker.add(tick);
     cleanups.push(() => gsap.ticker.remove(tick));
 
-    const title = '.exact-hero-title, .alternate-hero-title';
-    gsap.set(title, { y: 50, scale: 0.86, opacity: 0, transformOrigin: '20% 80%' });
+    const heroLetters = '.hero-title-letter';
+    gsap.set(heroLetters, { y: 50, scale: 0.86, opacity: 0, transformOrigin: '50% 100%' });
     gsap.set('#mascot', { scale: 0.55, rotation: -16, opacity: 0, transformOrigin: '50% 90%' });
     gsap.set('.hero-subtitle, .contract-box, .hero__cta, .bubble', { y: 28, opacity: 0 });
     gsap.set('.left-doodle', { rotation: -12, scale: 0, opacity: 0 });
@@ -304,7 +304,14 @@ function mountMotion(
 
     function heroIntro() {
       const tl = gsap.timeline();
-      tl.to(title, { y: 0, scale: 1, opacity: 1, duration: 1.05, ease: 'elastic.out(1, 0.55)' })
+      tl.to(heroLetters, {
+        y: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 1.05,
+        ease: 'elastic.out(1, 0.55)',
+        stagger: 0.06,
+      })
         .to('#mascot', { scale: 1, rotation: 0, opacity: 1, duration: 1.15, ease: 'elastic.out(1, 0.5)' }, 0.08)
         .to('.hero-subtitle, .contract-box, .hero__cta, .bubble', { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', stagger: 0.08 }, 0.35)
         .to('.left-doodle, .right-doodle', { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(2.6)', stagger: 0.08 }, 0.45)
@@ -319,7 +326,16 @@ function mountMotion(
       gsap.to('.sticker--dark', { y: -8, rotation: 8, duration: 1.9, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.note', { y: -8, rotation: 10, duration: 1.5, stagger: 0.2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.scroll-hint', { y: 8, duration: 0.8, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-      gsap.to(title, { y: -6, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      gsap.utils.toArray<HTMLElement>('.hero-title-letter').forEach((el, i) => {
+        gsap.to(el, {
+          y: -8,
+          duration: 0.55,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+          delay: i * 0.09,
+        });
+      });
       const bubble = document.querySelector('.bubble');
       const lines = ['psst… hey', 'problem, darling?', 'troll!', 'good trolls only', 'wanna scroll?'];
       let line = 0;
@@ -340,7 +356,7 @@ function mountMotion(
       }
     }
 
-    gsap.to(title, {
+    gsap.to('.exact-hero-title, .alternate-hero-title', {
       yPercent: -16, ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
     });

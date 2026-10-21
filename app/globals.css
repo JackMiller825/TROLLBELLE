@@ -166,13 +166,39 @@ button:focus-visible, a:focus-visible { outline: 3px dashed #000; outline-offset
   box-shadow: 3px 3px 0 #000;
 }
 .exact-hero-title { width: 100%; }
-.exact-hero-title img { display: block; width: 100%; height: auto; }
+.hero-title-line {
+  display: inline-flex;
+  align-items: flex-end;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 0;
+}
+.hero-title-letter {
+  display: block;
+  flex: 0 0 calc(var(--w, 0) * 1%);
+  overflow: hidden;
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+.hero-title-letter__img {
+  display: block;
+  width: calc(10000% / var(--w));
+  max-width: none;
+  height: auto;
+  margin-left: calc(-100% * var(--offset) / var(--w));
+  pointer-events: none;
+}
 .alternate-hero-title {
   margin: 0;
   font-family: 'Permanent Marker', Impact, sans-serif;
   font-size: clamp(56px, 8vw, 120px);
   line-height: 0.85;
   letter-spacing: -2px;
+}
+.alternate-hero-title .hero-title-letter {
+  flex: none;
+  overflow: visible;
+  display: inline-block;
 }
 .underline { display: block; width: min(420px, 86%); height: 18px; margin: 4px 0 10px; }
 .underline path { fill: none; stroke: #000; stroke-width: 4; stroke-linecap: round; }
