@@ -76,7 +76,7 @@ function Hero(){
   <div className="left-doodle" aria-hidden>same<br/>internet<br/>different<br/>problems<br/><b>☺</b></div>
   {site.name.toLowerCase()==='trollbelle'?<div className="exact-hero-title"><IconArt file="ref-hero-lettering.png" alt=""/><h1 className="sr-only" id="hero-heading">TROLLBELLE</h1></div>:<h1 id="hero-heading" className="alternate-hero-title">{site.name.toUpperCase()}</h1>}
   <IconArt className="hero-crown" file="ref-graffiti-crown.png"/>
-  <div className="hero-subtitle">the punk troll girl who escaped a deleted file<br/>and turned the internet into her playground.</div>
+  <div className="hero-subtitle">the punk troll girl who escaped a deleted file<br/> and turned the internet into her playground.</div>
   <div className="contract-box" role="group" aria-label="Official contract address">
    <span>CA:</span><code>{site.tokenAddress||'dropping at launch...'}</code><button type="button" disabled={!site.tokenAddress} onClick={doCopy} aria-label={site.tokenAddress?'Copy contract address':'Contract not available yet'}>{copied?<Check size={23}/>:<Copy size={23}/>}</button>
   </div>
