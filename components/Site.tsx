@@ -6,7 +6,7 @@ import { Check, Copy, Menu, X } from 'lucide-react';
 import { site, uniswapUrl, dexscreenerUrl } from '@/lib/site';
 import { fetchMarket, formatDollar, formatPrice, type MarketSnapshot } from '@/lib/market';
 
-const P='/images/';
+const P = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/`;
 const story = [
   {title:'the deleted file',text:'She was just a deleted file... or so they thought.',alt:'A deleted meme file on an old desktop computer'},
   {title:'out of the monitor',text:'But Trollbelle glitched out and escaped.',alt:'Trollbelle peeking out of a broken computer screen'},
@@ -110,5 +110,5 @@ function Footer(){return <footer className="footer"><div className="footer-links
 export default function Site(){
  const [comparison,setComparison]=useState(false);
  useEffect(()=>{const params=new URLSearchParams(window.location.search);setComparison(params.get('compare')==='1')},[]);
- return <><div className="site-shell"><Header/><main><Hero/><Story/><Buy/><TokenomicsRoadmap/></main><Footer/></div>{comparison&&<div className="comparison-overlay" aria-hidden><Image unoptimized src="/reference/REFERENCE_FULLPAGE_1055x1491.png" alt="" width={1055} height={1491}/></div>}</>;
+ return <><div className="site-shell"><Header/><main><Hero/><Story/><Buy/><TokenomicsRoadmap/></main><Footer/></div>{comparison&&<div className="comparison-overlay" aria-hidden><Image unoptimized src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/reference/REFERENCE_FULLPAGE_1055x1491.png`} alt="" width={1055} height={1491}/></div>}</>;
 }

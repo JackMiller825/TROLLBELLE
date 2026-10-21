@@ -40,7 +40,7 @@ Reference source: `/reference/REFERENCE_FULLPAGE_1055x1491.png`. At 1055px viewp
 
 `npm install` → `npm run dev` → `npm run check` → `npm run build`. On Windows, run `START-TROLLBELLE.cmd` after Node.js installation.
 
-Pushing the `main` branch publishes the static site. After the **Publish GitHub Pages** workflow finishes, open https://jackmiller825.github.io/TROLLBELLE/ . The workflow sets the base path to `/TROLLBELLE`. A local build without that variable is served from `/`.
+Pushing the `main` branch publishes the static site. After the **Publish GitHub Pages** workflow finishes, open https://jackmiller825.github.io/TROLLBELLE/ . The workflow sets the base path to `/TROLLBELLE`, and artwork `src` values include that prefix because the static image tags do not add it on their own. A local build without that variable is served from `/`.
 
 ## 11. Known limits
 
