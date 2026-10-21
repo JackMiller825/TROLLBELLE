@@ -22,7 +22,7 @@ The stats scene is its own screen. Markets are fetched in the browser from the D
 
 ## 6. Buying guide
 
-One screen: a large title, four framed Ethereum doodles (`buy-1.png` … `buy-4.png`), and a line that draws on as the scene arrives. Steps stay MetaMask/Rabby, ETH, Uniswap, and hold & troll. A visible line tells people to write the recovery phrase on paper. The Uniswap button only leaves the site after a real contract is set; until then it scrolls to this scene.
+One screen: a large title, four framed Ethereum doodles (`buy-1.png` … `buy-4.png`), and a hand-drawn arrow that draws on as the scene arrives. Steps stay MetaMask/Rabby, ETH, Uniswap, and hold & troll. The wallet step’s screen-reader text still mentions writing the recovery phrase on paper.
 
 ## 7. Troll-nomics & Troll-map
 

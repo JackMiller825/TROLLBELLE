@@ -19,7 +19,7 @@ const story = [
 ];
 
 const buySteps = [
-  { title: 'get a wallet', text: 'Download MetaMask or Rabby wallet from the official provider.', file: 'buy-1.png', w: 1122, h: 1402 },
+  { title: 'get a wallet', text: 'Download MetaMask or Rabby wallet from the official provider. Write the recovery phrase on paper. Do not show it to anyone, not even trollbelle.', file: 'buy-1.png', w: 1122, h: 1402 },
   { title: 'get some ETH', text: 'Buy ETH on an exchange and send it to your Ethereum wallet. Keep ETH for network gas.', file: 'buy-2.png', w: 1122, h: 1402 },
   { title: 'swap on Uniswap', text: 'Open official Uniswap, select Ethereum and verify the exact contract address before swapping.', file: 'buy-3.png', w: 1122, h: 1402 },
   { title: 'hold & troll', text: 'Make memes and enjoy the community. Memecoins can lose all their value.', file: 'buy-4.png', w: 1122, h: 1402 },
@@ -446,10 +446,6 @@ function Buy() {
         <path className="buy-arrow__path" d="M20 80 C 160 10, 300 110, 480 60 S 800 10, 960 70" />
         <path className="buy-arrow__head" d="M930 50 L962 72 L926 86" />
       </svg>
-      <p className="buy-note">
-        write the recovery phrase on paper. do not show it to anyone, not even trollbelle.
-        double-check the contract before you swap. <BuyLink>open uniswap</BuyLink>
-      </p>
     </section>
   );
 }
@@ -464,21 +460,27 @@ function Tokenomics() {
   return (
     <section className="screen tokenomics" id="tokenomics" aria-labelledby="tokenomics-heading">
       <h2 className="section__title" id="tokenomics-heading" aria-label="troll-nomics"><Chars text="troll-nomics" /></h2>
-      <div className="nomics">
+      <div className="tokenomics__wrap">
         <div className="pie">
-          <svg className="pie__svg" viewBox="0 0 200 200" aria-hidden="true">
-            <circle className="pie__disc" cx="100" cy="100" r="78" />
-            <circle className="pie__fill" cx="100" cy="100" r="90" pathLength="1" />
+          <svg viewBox="0 0 300 300" aria-hidden="true">
+            <path
+              className="pie__ring boil"
+              d="M150 20c74-2 132 56 130 132-2 72-60 128-132 126C76 276 20 220 22 150 24 78 80 22 150 20z"
+            />
+            <path
+              className="pie__fill"
+              d="M150 60c50 0 90 40 90 90s-40 90-90 90-90-40-90-90 40-90 90-90z"
+              pathLength={1}
+            />
           </svg>
           <div className="pie__label">
-            <strong>100%</strong>
+            <b>100%</b>
             <span>for the hand</span>
           </div>
-          <IconArt className="pie__spark" file="ref-graffiti-star.png" alt="" />
         </div>
         <ul className="facts">
           {rows.map(([name, value]) => (
-            <li className="tilt" key={name}><span>{name}</span><b>{value}</b></li>
+            <li className="card tilt" key={name}><span>{name}</span><b>{value}</b></li>
           ))}
         </ul>
       </div>
