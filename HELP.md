@@ -2,7 +2,7 @@
 
 ## 1. Navigation
 
-The header links scroll within **one page**: Stats (`#stats`), Story (`#story`), How to Buy (`#buy`), and Troll-map (`#roadmap`). The brand and crown scroll to the top. On small screens the links are in a responsive menu.
+The page is seven full-viewport scenes: hero, live stats (`#stats`), story (`#story`), how to buy (`#buy`), troll-nomics (`#tokenomics`), troll-map (`#roadmap`), and a black outro. The floating nav links scroll to stats, story, how to buy, and troll-map. The brand scrolls to the top. On small screens the links sit in a menu. Each scene is one screen tall on desktop, so scrolling moves you into the next scene. The story scene stays pinned while its five doodles slide sideways.
 
 ## 2. Hero and branding
 
@@ -14,19 +14,19 @@ Before a valid CA is configured: visible label reads “dropping at launch...”
 
 ## 4. Stats
 
-Markets are fetched in the browser from the DexScreener API, selected by Ethereum chain and token CA; updates ~30 seconds. Displays market cap, liquidity and price when live. Holder data remains **unavailable** without a suitable trustworthy data source. Prior to launch all metrics remain dashes. There is no server route: GitHub Pages only serves the static export.
+The stats scene is its own screen. Markets are fetched in the browser from the DexScreener API, selected by Ethereum chain and token CA; updates ~30 seconds. When a pair is live it shows price, market cap, liquidity, volume, transactions, price change and age. Holder data remains **unavailable**. Prior to launch every number stays a dash and the badge reads “waiting”. There is no server route: GitHub Pages only serves the static export.
 
 ## 5. Story
 
-Five separate portrait reference-image cards rendered in one desktop row and horizontally scrollable on mobile. See `ref-story-card-01.png` ... `05.png`. The text is part of the images; accessible text equivalents are in `components/Site.tsx`.
+“Who is trollbelle?” fills one screen. On desktop the scene pins and the five doodle cards (`ref-story-card-01.png` ... `05.png`) slide sideways as you scroll. On a phone, swipe the row. The handwritten captions are part of the images; text equivalents are in `components/Site.tsx`.
 
 ## 6. Buying guide
 
-Four image cards (`ref-buy-card-01.png` ... `04.png`) preserve the hand-drawn Ethereum wallet, ETH, Uniswap and “Hold & Troll” images. Do not link an arbitrary swap before CA verification. Seed phrase safety guidance is included in accessible descriptions.
+One screen: a large title, four illustrated Ethereum cards (`ref-buy-card-01.png` ... `04.png`), and a line that draws on as the scene arrives. The cards stay MetaMask/Rabby, ETH, Uniswap, and hold & troll. A visible line tells people to write the recovery phrase on paper. The Uniswap button only leaves the site after a real contract is set; until then it scrolls to this scene.
 
 ## 7. Troll-nomics & Troll-map
 
-The table and roadmap use editable HTML over screenshot-matched headings. Default tokenomics include **PLANNED** supply/tax, but LP and ownership statuses say **NOT VERIFIED** until independently checked. Roadmap text is illustrative, not a promise.
+Each one is its own screen. The ring is a drawing labeled “planned / not a promise”, not an allocation. Supply and tax stay **PLANNED**. LP and ownership stay **NOT VERIFIED**. The map’s only checked boxes are “draw the creature” and “website is up”. Nothing about holders, exchanges, or liquidity is marked done.
 
 ## 8. Social/footer
 
@@ -34,7 +34,7 @@ External links are disabled until valid HTTPS URLs are configured. Footer contai
 
 ## 9. Visual checking
 
-Reference source: `/reference/REFERENCE_FULLPAGE_1055x1491.png`. At 1055px viewport, visit `/?compare=1` and compare underlay/overlay for element size and position. Never use the full-page reference image as a production background.
+Reference source: `/reference/REFERENCE_FULLPAGE_1055x1491.png`. `/?compare=1` still lays that poster over the page at 40% opacity and freezes motion. The live page is no longer that short poster: it is seven screens, so the overlay will not line up with every scene. Never use the full-page reference image as a production background.
 
 ## 10. Development commands
 
@@ -48,6 +48,6 @@ The exported reference exact-card images contain baked text; only other text and
 
 ## 12. Motion
 
-The page uses the same motion language as a hand-drawn launch site: a draw-on loader, smooth scrolling, a velocity-sensitive marquee, scroll-in cards, pointer tilt, a following ink cursor on desktop, click bursts, and a small toast when a launch link is still closed. The header sticks and tucks away while you scroll down. The mascot eases in, floats, leans toward the pointer, and squishes when clicked.
+The page uses the same motion language as a hand-drawn launch site: a draw-on loader, smooth scrolling through seven full screens, a pinned sideways story, a velocity-sensitive marquee, titles that pop letter by letter, a draw-on ring and arrow, scroll-in cards, pointer tilt, a following ink cursor on desktop, click bursts, and a small toast when a launch link is still closed. The nav floats and tucks away while you scroll down. The mascot eases in, floats, leans toward the pointer, and squishes when clicked. The speech bubble cycles lines.
 
 `prefers-reduced-motion` is not used to switch the show off, because some Windows setups report that whenever animation effects are disabled and it would hide the whole motion design. Add `?reduce=1` to turn motion off. Open `/?compare=1` to freeze motion for a still comparison with the reference drawing.

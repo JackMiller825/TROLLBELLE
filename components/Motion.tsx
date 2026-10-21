@@ -141,7 +141,11 @@ function mountMotion(
       duration: 1.15,
       smoothWheel: true,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      prevent: (node: HTMLElement) => Boolean(node.closest('.story-grid')),
+      prevent: (node: HTMLElement) => {
+        if (node.closest('.story.is-static')) return true;
+        const steps = node.closest('.steps') as HTMLElement | null;
+        return Boolean(steps && steps.scrollWidth > steps.clientWidth + 8);
+      },
     });
     lenis.on('scroll', ScrollTrigger.update);
     const ticker = (time: number) => lenis?.raf(time * 1000);
@@ -171,7 +175,7 @@ function mountMotion(
         const target = id.length > 1 ? document.querySelector(id) : document.getElementById('top');
         if (!target) return;
         event.preventDefault();
-        if (lenis) lenis.scrollTo(target as HTMLElement, { offset: id === '#top' ? 0 : -8, duration: 1.2 });
+        if (lenis) lenis.scrollTo(target as HTMLElement, { offset: 0, duration: 1.2 });
         else target.scrollIntoView({ behavior: 'smooth' });
       };
       anchor.addEventListener('click', onClick);
@@ -293,19 +297,20 @@ function mountMotion(
     const title = '.exact-hero-title, .alternate-hero-title';
     gsap.set(title, { y: 50, scale: 0.86, opacity: 0, transformOrigin: '20% 80%' });
     gsap.set('#mascot', { scale: 0.55, rotation: -16, opacity: 0, transformOrigin: '50% 90%' });
-    gsap.set('.hero-subtitle, .contract-box, .stats-section', { y: 28, opacity: 0 });
+    gsap.set('.hero-subtitle, .contract-box, .hero__cta, .bubble', { y: 28, opacity: 0 });
     gsap.set('.left-doodle', { rotation: -12, scale: 0, opacity: 0 });
     gsap.set('.right-doodle', { rotation: -11, scale: 0, opacity: 0 });
     gsap.set('.hero-crown', { rotation: 8, scale: 0, opacity: 0 });
     gsap.set('.hero-star', { scale: 0, opacity: 0 });
+    gsap.set('.scroll-hint', { opacity: 0, y: 12 });
 
     function heroIntro() {
       const tl = gsap.timeline();
       tl.to(title, { y: 0, scale: 1, opacity: 1, duration: 1.05, ease: 'elastic.out(1, 0.55)' })
         .to('#mascot', { scale: 1, rotation: 0, opacity: 1, duration: 1.15, ease: 'elastic.out(1, 0.5)' }, 0.08)
-        .to('.hero-subtitle, .contract-box', { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', stagger: 0.08 }, 0.35)
+        .to('.hero-subtitle, .contract-box, .hero__cta, .bubble', { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', stagger: 0.08 }, 0.35)
         .to('.left-doodle, .right-doodle, .hero-crown, .hero-star', { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(2.6)', stagger: 0.08 }, 0.45)
-        .to('.stats-section', { y: 0, opacity: 1, duration: 0.7, ease: 'back.out(1.6)' }, 0.6)
+        .to('.scroll-hint', { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' }, 0.7)
         .add(heroIdle, 0.9);
     }
 
@@ -313,9 +318,30 @@ function mountMotion(
       gsap.to('.mascot-img', { y: -12, rotation: 1.4, duration: 2.1, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.left-doodle', { y: -8, rotation: -16, duration: 1.8, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.right-doodle', { y: -10, rotation: -6, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      gsap.to('.sticker--dark', { y: -8, rotation: 8, duration: 1.9, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.hero-crown', { rotation: 16, duration: 1.7, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to('.hero-star', { rotation: 360, duration: 12, ease: 'none', repeat: -1 });
+      gsap.to('.note', { y: -8, rotation: 10, duration: 1.5, stagger: 0.2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      gsap.to('.scroll-hint', { y: 8, duration: 0.8, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       gsap.to(title, { y: -6, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      const bubble = document.querySelector('.bubble');
+      const lines = ['psst… hey', 'problem, darling?', 'troll!', 'good trolls only', 'wanna scroll?'];
+      let line = 0;
+      if (bubble) {
+        const cycle = window.setInterval(() => {
+          line = (line + 1) % lines.length;
+          gsap.to(bubble, {
+            y: -8,
+            opacity: 0,
+            duration: 0.22,
+            onComplete: () => {
+              bubble.textContent = lines[line];
+              gsap.fromTo(bubble, { y: 8, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: 'back.out(2)' });
+            },
+          });
+        }, 2800);
+        cleanups.push(() => window.clearInterval(cycle));
+      }
     }
 
     gsap.to(title, {
@@ -371,16 +397,87 @@ function mountMotion(
       });
     }
 
-    gsap.utils.toArray<HTMLElement>('.story-ribbon, .buy-ribbon, .lower-title img').forEach((ribbon) => {
-      gsap.from(ribbon, {
-        y: 24, rotation: -6, opacity: 0, duration: 0.8, ease: 'back.out(1.8)',
-        scrollTrigger: { trigger: ribbon, start: 'top 88%', toggleActions: 'play none none reverse' },
+    gsap.utils.toArray<HTMLElement>('.section__title, .story-title').forEach((el) => {
+      const chars = el.querySelectorAll('.ch');
+      if (!chars.length) return;
+      gsap.from(chars, {
+        yPercent: 120,
+        rotate: () => rand(-16, 16),
+        stagger: 0.03,
+        duration: 0.7,
+        ease: 'back.out(2)',
+        scrollTrigger: { trigger: el, start: 'top 88%' },
       });
     });
 
-    gsap.set('.tilt, .road-cols > div, .token-table, .footer', { opacity: 0 });
-    ScrollTrigger.batch('.tilt, .road-cols > div, .token-table, .footer', {
-      start: 'top 90%',
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 861px)', () => {
+      const story = document.querySelector('.story');
+      const track = document.querySelector('#story-track') as HTMLElement | null;
+      if (!story || !track) return;
+      story.classList.remove('is-static');
+      const distance = () => Math.max(0, track.scrollWidth - window.innerWidth + 48);
+      gsap.to(track, {
+        x: () => -distance(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: story,
+          pin: true,
+          scrub: 1,
+          start: 'top top',
+          end: () => `+=${distance()}`,
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
+        },
+      });
+    });
+    mm.add('(max-width: 860px)', () => {
+      document.querySelector('.story')?.classList.add('is-static');
+      return () => document.querySelector('.story')?.classList.remove('is-static');
+    });
+    cleanups.push(() => mm.revert());
+
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener('load', refresh);
+    const refreshTimer = window.setTimeout(refresh, 500);
+    cleanups.push(() => {
+      window.removeEventListener('load', refresh);
+      window.clearTimeout(refreshTimer);
+    });
+
+    const arrow = document.querySelector('.buy-arrow__path') as SVGPathElement | null;
+    if (arrow) {
+      arrow.setAttribute('pathLength', '1');
+      arrow.style.strokeDasharray = '1 1';
+      arrow.style.strokeDashoffset = '1';
+      gsap.to(arrow, {
+        strokeDashoffset: 0,
+        duration: 1.15,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: '.buy', start: 'top 62%', toggleActions: 'play none none reverse' },
+      });
+    }
+    const pie = document.querySelector('.pie__fill') as SVGGeometryElement | null;
+    if (pie) {
+      gsap.to(pie, {
+        strokeDashoffset: 0,
+        duration: 1.35,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: '.tokenomics', start: 'top 65%', toggleActions: 'play none none reverse' },
+      });
+    }
+    gsap.from('.outro__word .ch', {
+      yPercent: 120,
+      stagger: 0.045,
+      duration: 0.75,
+      ease: 'back.out(1.8)',
+      scrollTrigger: { trigger: '.outro', start: 'top 72%' },
+    });
+
+    const reveal = '.stat.tilt, .step.tilt, .facts .tilt, .phase.tilt, .outro .tilt';
+    gsap.set(reveal, { opacity: 0 });
+    ScrollTrigger.batch(reveal, {
+      start: 'top 92%',
       onEnter: (batch) => gsap.fromTo(batch,
         { y: 64, opacity: 0, rotation: () => rand(-6, 6) },
         { y: 0, opacity: 1, rotation: 0, duration: 0.8, ease: 'back.out(1.5)', stagger: 0.07, overwrite: true }),

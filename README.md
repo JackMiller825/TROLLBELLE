@@ -1,6 +1,6 @@
 # TROLLBELLE — screenshot-faithful Next.js site
 
-**Design source:** `../design-reference/REFERENCE_FULLPAGE_1055x1491.png` (also served at `/reference/REFERENCE_FULLPAGE_1055x1491.png`). This site is intentionally a close layout recreation of that image—not an alternative redesign.
+**Design source:** `../design-reference/REFERENCE_FULLPAGE_1055x1491.png` (also served at `/reference/REFERENCE_FULLPAGE_1055x1491.png`). The ink, the punk mascot, and the doodle cards come from that drawing. The page itself is seven full-viewport scenes — hero, stats, story, how to buy, troll-nomics, troll-map, outro — so a scroll moves one scene at a time.
 
 ## Quick start
 
@@ -13,7 +13,7 @@
 
 ## Exact reference fidelity
 
-Reference dimensions: **1055 × 1491**. The single-page site is white with black ink only. At 1055px it matches the reference composition: horizontal navigation, large brush-lettered **TROLLBELLE**, Punk Princess on the right, hand-sketched contract box, four live-stats fields, five story doodle cards, four illustrated buy cards, tokenomics/roadmap in two columns, and minimalist footer.
+The site is white with black ink only, then a black outro. Desktop scenes are one screen each. The hero keeps the brush-lettered **TROLLBELLE**, the Punk Princess, and the contract box. Stats, the five story doodles, the four buy cards, troll-nomics, and the troll-map each get their own screen. On desktop the story pins and slides sideways. The reference poster is an alignment overlay (`/?compare=1`), not the page height.
 
 The project includes high-resolution isolated hero artwork and 19 extracted reference assets, including actual illustrated and hand-lettered cards. The reference PNG is **not** being used as an entire site background. Major text, data, buttons and links are real elements.
 
@@ -28,8 +28,7 @@ Open `http://localhost:3000/?compare=1` at **1055px viewport width**. This displ
 - All finished artworks are black and white, with transparent alpha when appropriate.
 - No red accents, gradients, grey shadows or modern cards.
 - Keep rough uneven border art and hand-lettered tone.
-- Do not introduce visual sections that aren't in the reference.
-- On mobile: hamburger nav, large hero, sideways-scrollable story panels, two-column buy guide, stacked tokenomics and roadmap.
+- On mobile: hamburger nav, a tall hero, a sideways swipe for the story and the buy cards, and stacked troll-nomics and troll-map. Each scene is still at least one screen.
 
 ## Settings
 
@@ -51,9 +50,9 @@ Tokenomics fields are **planned/unverified placeholders**, never claims of on-ch
 ## Structure
 
 - `app/page.tsx`: route.
-- `components/Site.tsx`: exactly matched section layout and functional controls.
-- `components/Motion.tsx`: loader, smooth scroll, marquee, scroll reveals, cursor, and click effects.
-- `app/globals.css`: layout at reference size and responsive breakpoints.
+- `components/Site.tsx`: seven full-screen scenes and the launch controls.
+- `components/Motion.tsx`: loader, smooth scroll, pinned story, marquee, scroll reveals, cursor, and click effects.
+- `app/globals.css`: full-viewport scenes, ink-and-paper styling, and motion chrome.
 - `lib/market.ts`: DexScreener pair selection and browser market fetch.
 - `lib/site.ts`: token/site config and safe external links.
 - `public/images/`: 47 reusable image assets.
