@@ -103,6 +103,31 @@ function HeroTitleLetters({ word, image }: { word: string; image?: boolean }) {
   );
 }
 
+function NavIconX() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 4l16 16M20 4 4 20" />
+    </svg>
+  );
+}
+
+function NavIconTelegram() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 11 21 4l-3 16-6-5-3 4v-6l9-8" />
+    </svg>
+  );
+}
+
+function NavIconChart() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 19 9 12l4 4 8-10" />
+      <path d="M16 6h5v5" />
+    </svg>
+  );
+}
+
 function Social({
   href,
   children,
@@ -155,9 +180,9 @@ function Header() {
           <a href="#roadmap" onClick={close}>troll-map</a>
         </div>
         <div className="nav__tools">
-          <Social href={site.x} label="X" soon="X link drops at launch" className="icon-btn"><span className="social-x">𝕏</span></Social>
-          <Social href={site.telegram} label="Telegram" soon="telegram opens at launch" className="icon-btn"><span className="social-telegram">➤</span></Social>
-          <Social href={dexscreenerUrl} label="DexScreener" soon="chart drops at launch" className="icon-btn"><span>◈</span></Social>
+          <Social href={site.x} label="X" soon="X link drops at launch" className="icon-btn"><NavIconX /></Social>
+          <Social href={site.telegram} label="Telegram" soon="telegram opens at launch" className="icon-btn"><NavIconTelegram /></Social>
+          <Social href={dexscreenerUrl} label="DexScreener" soon="chart drops at launch" className="icon-btn"><NavIconChart /></Social>
           <BuyLink className="btn btn--solid nav__buy">buy {site.ticker.toLowerCase()}</BuyLink>
           <button type="button" className="menu-button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen((v) => !v)}>
             {open ? <X size={22} /> : <Menu size={22} />}
