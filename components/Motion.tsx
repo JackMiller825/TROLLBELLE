@@ -65,7 +65,7 @@ export default function Motion() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="loader__mouth-img"
-                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/trollbelle-mouth.png?v=3`}
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/trollbelle-mouth.png?v=4`}
                 alt=""
                 width={1774}
                 height={887}
@@ -238,9 +238,8 @@ function mountMotion(
 
     const pulseMouthLaugh = (target: string) => {
       gsap.timeline()
-        .to(target, { scaleX: 1.14, scaleY: 0.9, rotation: 3, duration: 0.18, ease: 'sine.in', transformOrigin: '50% 55%', overwrite: 'auto' })
-        .to(target, { scaleX: 0.94, scaleY: 1.12, rotation: -3, duration: 0.18, ease: 'sine.out' })
-        .to(target, { scaleX: 1, scaleY: 1, rotation: 0, duration: 0.14, ease: 'sine.out' });
+        .to(target, { scale: 1.06, duration: 0.14, ease: 'sine.in', transformOrigin: '50% 55%', overwrite: 'auto' })
+        .to(target, { scale: 1, duration: 0.16, ease: 'sine.out' });
     };
     const beatLoaderLaugh = () => { pulseMouthLaugh('.loader__mouth-pivot'); };
     const loaderLaughTimer = window.setInterval(beatLoaderLaugh, 1000);

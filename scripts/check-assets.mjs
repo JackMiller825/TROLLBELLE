@@ -1,6 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 const dir=path.join(process.cwd(),'public','images');
+const mouthSrc=path.join(process.cwd(),'..','new-assets','mouth.png');
+const mouthDst=path.join(dir,'trollbelle-mouth.png');
+if(fs.existsSync(mouthSrc)&&fs.existsSync(mouthDst)){
+ const h=(p)=>createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+ if(h(mouthSrc)!==h(mouthDst)){console.error('FAIL: trollbelle-mouth.png must match ../new-assets/mouth.png (run npm run sync:mouth)');process.exit(1)}
+}
 const manifest=JSON.parse(fs.readFileSync(path.join(dir,'ASSET-MANIFEST.json'),'utf8'));
 let failures=0;
 for(const entry of manifest.assets){

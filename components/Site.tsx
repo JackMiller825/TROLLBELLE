@@ -9,7 +9,7 @@ import { showToast } from '@/lib/toast';
 import Motion from '@/components/Motion';
 
 const P = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/`;
-const MOUTH_SRC = `${P}trollbelle-mouth.png?v=3`;
+const MOUTH_SRC = `${P}trollbelle-mouth.png?v=4`;
 const CA_PLACEHOLDER = 'Coming Soon..';
 
 const story = [

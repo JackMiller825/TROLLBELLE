@@ -1,7 +1,7 @@
-"""Build trollbelle-mouth.png from new-assets/mouth.png.
+"""Optional: knock out the black oval fill only. Do NOT use for the live site.
 
-Only the largest connected black region (the oval fill) is made transparent.
-Every other pixel stays identical to the source asset (white teeth, black ink).
+The website uses the raw asset (see scripts/sync-mouth.mjs) so the mouth matches
+new-assets/mouth.png pixel-for-pixel.
 """
 from __future__ import annotations
 
